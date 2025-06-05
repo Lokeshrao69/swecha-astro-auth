@@ -1,0 +1,156 @@
+---
+// src/components/Recording.astro - Recording component
+// This would be part of the dashboard page in a real implementation
+
+// Props for the selected topic
+interface Props {
+  topicName?: string;
+  topicIcon?: string;
+}
+
+const { 
+  topicName = "General", 
+  topicIcon = "🎤" 
+} = Astro.props;
+---
+
+<div id="recording-screen" class="screen">
+  <div class="recording-container">
+    <header class="recording-header">
+      <button id="back-to-dashboard" class="back-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h2 class="recording-title">Recording</h2>
+    </header>
+
+    <div class="recording-content">
+      <div class="recording-status">
+        <h3 id="recording-prompt">Say something, start recording</h3>
+        <div id="recording-indicator" class="recording-indicator"></div>
+      </div>
+
+      <div class="recording-controls">
+        <button id="record-button" class="record-button">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="record-instruction">Tap the mic to speak</p>
+      </div>
+
+      <div class="selected-topic">
+        <span class="topic-label">Topic:</span>
+        <span id="current-topic" class="current-topic">{topicName}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Recording functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const recordingScreen = document.getElementById('recording-screen');
+  if (!recordingScreen) return;
+
+  // Recording elements
+  const recordingElements = {
+    backToDashboard: document.getElementById('back-to-dashboard'),
+    recordButton: document.getElementById('record-button'),
+    recordingPrompt: document.getElementById('recording-prompt'),
+    recordingIndicator: document.getElementById('recording-indicator'),
+    currentTopic: document.getElementById('current-topic')
+  };
+
+  // Recording state
+  let isRecording = false;
+
+  // Toggle recording
+  function toggleRecording() {
+    isRecording = !isRecording;
+    updateRecordingUI();
+    
+    if (isRecording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  }
+
+  function startRecording() {
+    console.log('Starting recording...');
+    
+    // Update UI
+    if (recordingElements.recordingPrompt) {
+      recordingElements.recordingPrompt.textContent = 'Recording in progress...';
+    }
+    
+    if (recordingElements.recordingIndicator) {
+      recordingElements.recordingIndicator.classList.add('active');
+    }
+    
+    // Simulate recording duration (auto-stop after 30 seconds)
+    setTimeout(() => {
+      if (isRecording) {
+        toggleRecording();
+      }
+    }, 30000);
+  }
+
+  function stopRecording() {
+    console.log('Stopping recording...');
+    
+    // Update UI
+    if (recordingElements.recordingPrompt) {
+      recordingElements.recordingPrompt.textContent = 'Recording completed!';
+    }
+    
+    if (recordingElements.recordingIndicator) {
+      recordingElements.recordingIndicator.classList.remove('active');
+    }
+    
+    // Reset after a delay
+    setTimeout(() => {
+      if (recordingElements.recordingPrompt) {
+        recordingElements.recordingPrompt.textContent = 'Say something, start recording';
+      }
+    }, 3000);
+  }
+
+  function updateRecordingUI() {
+    if (recordingElements.recordButton) {
+      if (isRecording) {
+        recordingElements.recordButton.classList.add('recording');
+      } else {
+        recordingElements.recordButton.classList.remove('recording');
+      }
+    }
+  }
+
+  // Event listeners
+  if (recordingElements.backToDashboard) {
+    recordingElements.backToDashboard.addEventListener('click', () => {
+      // In a real Astro app, this would navigate back to the dashboard page
+      // For demo, we'll dispatch a custom event
+      document.dispatchEvent(new CustomEvent('returnToDashboard'));
+    });
+  }
+  
+  if (recordingElements.recordButton) {
+    recordingElements.recordButton.addEventListener('click', toggleRecording);
+  }
+
+  // Keyboard support
+  document.addEventListener('keydown', (e) => {
+    // Handle spacebar for recording
+    if (e.key === ' ' || e.code === 'Space') {
+      if (recordingScreen.classList.contains('active')) {
+        e.preventDefault();
+        toggleRecording();
+      }
+    }
+  });
+});
+</script>

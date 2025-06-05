@@ -1,0 +1,90 @@
+---
+// src/components/AuthForm.astro - Reusable authentication form component
+// This component renders different auth forms based on the type prop
+
+// Props interface
+interface Props {
+  type: 'signin' | 'signup' | 'otp';
+  phone?: string;
+}
+
+const { type, phone = '' } = Astro.props;
+
+// Form title and button text based on type
+const formConfig = {
+  signin: {
+    title: 'Sign in to your account',
+    subtitle: 'Enter your phone number to receive OTP',
+    buttonText: 'SEND OTP',
+    formId: 'signin-form',
+    inputId: 'signin-phone',
+    inputType: 'tel',
+    placeholder: 'Enter your phone number here'
+  },
+  signup: {
+    title: 'Create your account',
+    subtitle: 'Enter your phone number to receive OTP',
+    buttonText: 'SEND OTP',
+    formId: 'create-account-form',
+    inputId: 'create-phone',
+    inputType: 'tel',
+    placeholder: 'Enter your phone number here'
+  },
+  otp: {
+    title: 'Verify your phone',
+    subtitle: 'Enter OTP sent to your phone',
+    buttonText: 'VERIFY OTP',
+    formId: 'otp-form',
+    inputId: 'otp-code',
+    inputType: 'text',
+    placeholder: 'Enter the OTP sent to your phone'
+  }
+};
+
+const config = formConfig[type];
+---
+
+<div class="auth-container">
+  <div class="auth-header">
+    <div class="profile-icon small">
+      <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+        <circle cx="40" cy="30" r="12" fill="#fff"/>
+        <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+      </svg>
+    </div>
+    <h2 id={`${type}-heading`}>{config.title}</h2>
+    <p class="auth-subtitle">{config.subtitle}</p>
+    {type === 'otp' && <p id="otp-phone-display" class="auth-phone-display">{phone}</p>}
+  </div>
+  
+  <form id={config.formId} class="auth-form">
+    <div class="form-group">
+      <input
+  type={config.inputType as any}
+  id={config.inputId}
+  class="form-control"
+  placeholder={config.placeholder}
+  required
+  maxlength={type === 'otp' ? '6' : '10'}
+/>
+    </div>
+    <button type="submit" class="btn btn--primary btn--full-width">{config.buttonText}</button>
+  </form>
+
+  <div class="auth-footer">
+    {type === 'signin' && (
+      <p>Don't have an account? <a href="#" id="go-to-create">Create account</a></p>
+    )}
+    {type === 'signup' && (
+      <p>Already a member? <a href="#" id="go-to-signin">Sign in here</a></p>
+    )}
+    {type === 'otp' && (
+      <>
+        <p>Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
+        <p><a href="#" id="back-to-phone">Use a different phone number</a></p>
+      </>
+    )}
+    <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+  </div>
+</div>

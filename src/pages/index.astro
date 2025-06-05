@@ -1,0 +1,625 @@
+---
+// src/pages/index.astro - Main application entry point
+import Layout from '../layouts/layout.astro';
+import AuthForm from '../components/auth-form.astro';
+import Dashboard from '../pages/dashboard.astro';
+import '../styles/global-styles.css';
+
+
+// Server-side logic (only runs on the server)
+// Check if user is authenticated
+const isAuthenticated = false; // Replace with actual auth check
+
+// Redirect logic would go here in a real application
+---
+<Layout>
+<Layout title="Swecha - Telugu Language Recognition">
+  <div class="app-container">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen active">
+      <div class="splash-content">
+        <div class="profile-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+            <circle cx="40" cy="30" r="12" fill="#fff"/>
+            <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+          </svg>
+        </div>
+        <h1 class="app-title">తెలుగు భాష గుర్తింపు</h1>
+        <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+      </div>
+    </div>
+
+    <!-- Sign In Screen -->
+    <div id="signin-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+              <circle cx="40" cy="30" r="12" fill="#fff"/>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+            </svg>
+          </div>
+          <h2>Sign in to your account</h2>
+          <p class="auth-subtitle">Enter your phone number to receive OTP</p>
+        </div>
+        
+        <form id="signin-form" class="auth-form">
+          <div class="form-group">
+            <input type="tel" id="signin-phone" class="form-control" placeholder="Enter your phone number here" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width">SEND OTP</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="#" id="go-to-create">Create account</a></p>
+          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Account Screen -->
+    <div id="create-account-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+              <circle cx="40" cy="30" r="12" fill="#fff"/>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+            </svg>
+          </div>
+          <h2>Create your account</h2>
+          <p class="auth-subtitle">Enter your phone number to receive OTP</p>
+        </div>
+        
+        <form id="create-account-form" class="auth-form">
+          <div class="form-group">
+            <input type="tel" id="create-phone" class="form-control" placeholder="Enter your phone number here" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width">SEND OTP</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Already a member? <a href="#" id="go-to-signin">Sign in here</a></p>
+          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTP Verification Screen -->
+    <div id="otp-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+              <circle cx="40" cy="30" r="12" fill="#fff"/>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+            </svg>
+          </div>
+          <h2 id="otp-heading">Verify your phone</h2>
+          <p class="otp-subtitle">Enter OTP sent to your phone</p>
+          <p id="otp-phone-display" class="auth-phone-display"></p>
+        </div>
+        
+        <form id="otp-form" class="auth-form">
+          <div class="form-group">
+            <input type="text" id="otp-code" class="form-control" placeholder="Enter the OTP sent to your phone" required maxlength="6">
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width">VERIFY OTP</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
+          <p><a href="#" id="back-to-phone">Use a different phone number</a></p>
+          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="screen">
+      <div class="splash-content">
+        <div class="profile-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#4CAF50" stroke="#fff" stroke-width="4"/>
+            <path d="M25 40l10 10 20-20" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="success-title">Welcome to Swecha!</h1>
+        <p class="success-message">Your account has been verified successfully.</p>
+        <button id="continue-to-dashboard" class="btn btn--primary btn--lg">Continue to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- Dashboard Component - Always include it in DOM -->
+    <Dashboard />
+  </div>
+</Layout>
+
+<script>
+// Client-side JavaScript - will run in the browser
+document.addEventListener('DOMContentLoaded', () => {
+  // TypeScript type definitions
+  type AppState = {
+    currentPhone: string | null;
+    currentScreen: string;
+    authFlow: 'signin' | 'signup' | null;
+    sessionToken: string | null;
+    isAuthenticated: boolean;
+  };
+
+  type APIResponse = {
+    success: boolean;
+    message?: string;
+    sessionToken?: string;
+    token?: string;
+    user?: {
+      id: string;
+      phone: string;
+    };
+  };
+
+  type Screens = {
+    [key: string]: HTMLElement | null;
+  };
+
+  type Forms = {
+    [key: string]: HTMLFormElement | null;
+  };
+
+  type NavLinks = {
+    [key: string]: HTMLElement | null;
+  };
+
+  // Global state
+  let appState: AppState = {
+    currentPhone: null,
+    currentScreen: 'splash',
+    authFlow: null,
+    sessionToken: null,
+    isAuthenticated: false
+  };
+
+  // DOM Elements - Include dashboard screen
+  const screens: Screens = {
+    splash: document.getElementById('splash-screen'),
+    signin: document.getElementById('signin-screen'),
+    createAccount: document.getElementById('create-account-screen'),
+    otp: document.getElementById('otp-screen'),
+    success: document.getElementById('success-screen'),
+    dashboard: document.getElementById('dashboard-screen')
+  };
+
+  const forms: Forms = {
+    signin: document.getElementById('signin-form') as HTMLFormElement,
+    createAccount: document.getElementById('create-account-form') as HTMLFormElement,
+    otp: document.getElementById('otp-form') as HTMLFormElement
+  };
+
+  const navLinks: NavLinks = {
+    goToCreate: document.getElementById('go-to-create'),
+    goToSignin: document.getElementById('go-to-signin'),
+    resendOtp: document.getElementById('resend-otp'),
+    backToPhone: document.getElementById('back-to-phone'),
+    continueToDashboard: document.getElementById('continue-to-dashboard')
+  };
+
+  // Show specified screen and hide others
+  function showScreen(screenId: string): void {
+    console.log('Showing screen:', screenId);
+    
+    // Hide all screens
+    Object.values(screens).forEach(screen => {
+      if (screen) {
+        screen.classList.remove('active');
+      }
+    });
+    
+    // Show the selected screen
+    if (screens[screenId]) {
+      screens[screenId]?.classList.add('active');
+      appState.currentScreen = screenId;
+      
+      // Update authentication state if showing dashboard
+      if (screenId === 'dashboard') {
+        appState.isAuthenticated = true;
+      }
+    }
+  }
+
+  // Initialize app
+  function initApp(): void {
+    // Show splash screen and auto-transition to signin
+    showScreen('splash');
+    
+    setTimeout(() => {
+      showScreen('signin');
+    }, 2500);
+
+    // Setup event listeners
+    setupEventListeners();
+    enhanceInputFields();
+  }
+
+  // Form validation
+  function validateForm(formType: string, data: Record<string, any>): Record<string, string> {
+    const errors: Record<string, string> = {};
+    
+    if (data.phone !== undefined) {
+      const phoneRegex = /^\d{10}$/;
+      if (!data.phone || !data.phone.trim()) {
+        errors.phone = 'Phone number is required';
+      } else if (!phoneRegex.test(data.phone)) {
+        errors.phone = 'Please enter a valid 10-digit phone number';
+      }
+    }
+    
+    if (data.otp !== undefined) {
+      if (!data.otp || !data.otp.trim()) {
+        errors.otp = 'OTP is required';
+      } else if (data.otp.length !== 6 || !/^\d+$/.test(data.otp)) {
+        errors.otp = 'OTP must be 6 digits';
+      }
+    }
+    
+    return errors;
+  }
+
+  // Display form errors
+  function showFormErrors(formType: string, errors: Record<string, string>): void {
+    const form = forms[formType];
+    if (!form) return;
+    
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach(msg => msg.remove());
+    
+    form.querySelectorAll('.form-control').forEach(input => {
+      input.classList.remove('error');
+    });
+    
+    Object.entries(errors).forEach(([field, message]) => {
+      let inputField;
+      if (formType === 'otp' && field === 'otp') {
+        inputField = document.getElementById('otp-code');
+      } else {
+        inputField = document.getElementById(`${formType}-${field}`);
+      }
+      
+      if (inputField) {
+        inputField.classList.add('error');
+        
+        const errorEl = document.createElement('span');
+        errorEl.className = 'error-message';
+        errorEl.textContent = message;
+        
+        const parent = inputField.parentNode;
+        if (parent) {
+          parent.appendChild(errorEl);
+        }
+      }
+    });
+  }
+
+  // Clear form errors
+  function clearFormErrors(formType: string): void {
+    const form = forms[formType];
+    if (!form) return;
+    
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach(msg => msg.remove());
+    
+    form.querySelectorAll('.form-control').forEach(input => {
+      input.classList.remove('error');
+    });
+  }
+
+  // Form submission handling
+  async function handleFormSubmit(formType: string, event: Event): Promise<void> {
+    event.preventDefault();
+    
+    const form = forms[formType];
+    if (!form) return;
+    
+    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    if (!submitButton) return;
+    
+    const originalText = submitButton.textContent || 'Submit';
+    
+    clearFormErrors(formType);
+    
+    // Show loading state
+    form.classList.add('loading');
+    submitButton.textContent = 'Loading...';
+    
+    // Get form data
+    const formData: Record<string, any> = {};
+    if (formType === 'signin') {
+      const phoneInput = document.getElementById('signin-phone') as HTMLInputElement;
+      formData.phone = phoneInput?.value || '';
+      formData.action = 'signin';
+      appState.authFlow = 'signin';
+    } else if (formType === 'createAccount') {
+      const phoneInput = document.getElementById('create-phone') as HTMLInputElement;
+      formData.phone = phoneInput?.value || '';
+      formData.action = 'signup';
+      appState.authFlow = 'signup';
+    } else if (formType === 'otp') {
+      const otpInput = document.getElementById('otp-code') as HTMLInputElement;
+      formData.otp = otpInput?.value || '';
+      formData.phone = appState.currentPhone || '';
+      formData.sessionToken = appState.sessionToken || '';
+    }
+    
+    // Validate form
+    const errors = validateForm(formType, formData);
+    
+    if (Object.keys(errors).length > 0) {
+      form.classList.remove('loading');
+      submitButton.textContent = originalText;
+      showFormErrors(formType, errors);
+      return;
+    }
+    
+    try {
+      // API integration points
+      if (formType === 'signin' || formType === 'createAccount') {
+        // Call send OTP API
+        const response = await sendOTP(formData.phone, formData.action);
+        
+        if (response.success) {
+          // Store phone and session token for OTP verification
+          appState.currentPhone = formData.phone;
+          appState.sessionToken = response.sessionToken || '';
+          
+          // Update OTP screen with phone number
+          const phoneDisplay = document.getElementById('otp-phone-display');
+          if (phoneDisplay) {
+            phoneDisplay.textContent = `+${formData.phone}`;
+          }
+          
+          // Update OTP heading based on flow
+          const otpHeading = document.getElementById('otp-heading');
+          if (otpHeading) {
+            otpHeading.textContent = appState.authFlow === 'signin' 
+              ? 'Sign in to your account' 
+              : 'Create your account';
+          }
+          
+          showScreen('otp');
+        } else {
+          // Show error
+          const errors = { phone: response.message || 'Failed to send OTP' };
+          showFormErrors(formType, errors);
+        }
+      } else if (formType === 'otp') {
+        // Call verify OTP API
+        const response = await verifyOTP(
+          formData.phone || '', 
+          formData.otp || '', 
+          formData.sessionToken || ''
+        );
+        
+        if (response.success) {
+          // Store auth token (JWT)
+          if (response.token) {
+            localStorage.setItem('authToken', response.token);
+            appState.isAuthenticated = true;
+          }
+          
+          // Show success screen
+          showScreen('success');
+        } else {
+          // Show error
+          const errors = { otp: response.message || 'Invalid OTP' };
+          showFormErrors(formType, errors);
+        }
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      
+      // Show generic error
+      const fieldName = formType === 'otp' ? 'otp' : 'phone';
+      const errors: Record<string, string> = { [fieldName]: 'An error occurred. Please try again.' };
+      showFormErrors(formType, errors);
+    } finally {
+      // Reset loading state
+      form.classList.remove('loading');
+      submitButton.textContent = originalText;
+    }
+  }
+
+  // API integration functions
+  async function sendOTP(phone: string, action: string): Promise<APIResponse> {
+    console.log(`Sending OTP to ${phone} for ${action}`);
+    
+    // Simulate API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          message: 'OTP sent successfully',
+          sessionToken: 'temp_session_token_' + Math.random().toString(36).substring(2)
+        });
+      }, 1500);
+    });
+  }
+
+  async function verifyOTP(phone: string, otp: string, sessionToken: string): Promise<APIResponse> {
+    console.log(`Verifying OTP ${otp} for phone ${phone} with session ${sessionToken}`);
+    
+    // Simulate API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Check if OTP is '123456' for demo purposes
+        if (otp === '123456') {
+          resolve({
+            success: true,
+            token: 'jwt_token_' + Math.random().toString(36).substring(2),
+            user: {
+              id: 'user_' + Math.random().toString(36).substring(2),
+              phone: phone
+            }
+          });
+        } else {
+          resolve({ success: false, message: 'Invalid OTP' });
+        }
+      }, 1500);
+    });
+  }
+
+  // Setup event listeners
+  function setupEventListeners(): void {
+    // Form submissions
+    if (forms.signin) {
+      forms.signin.addEventListener('submit', (e: Event) => handleFormSubmit('signin', e));
+    }
+    
+    if (forms.createAccount) {
+      forms.createAccount.addEventListener('submit', (e: Event) => handleFormSubmit('createAccount', e));
+    }
+    
+    if (forms.otp) {
+      forms.otp.addEventListener('submit', (e: Event) => handleFormSubmit('otp', e));
+    }
+    
+    // Navigation
+    if (navLinks.goToCreate) {
+      navLinks.goToCreate.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        showScreen('createAccount');
+      });
+    }
+    
+    if (navLinks.goToSignin) {
+      navLinks.goToSignin.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        showScreen('signin');
+      });
+    }
+    
+    if (navLinks.resendOtp) {
+      navLinks.resendOtp.addEventListener('click', function(e: MouseEvent) {
+        e.preventDefault();
+        
+        const resendBtn = e.target as HTMLElement;
+        const originalText = resendBtn.textContent || 'Resend';
+        resendBtn.textContent = 'Sending...';
+        if (resendBtn.style) {
+          resendBtn.style.pointerEvents = 'none';
+        }
+        
+        // Use an IIFE for async operations
+        (async function() {
+          try {
+            await sendOTP(appState.currentPhone || '', appState.authFlow || 'signin');
+          
+            resendBtn.textContent = 'Sent!';
+            setTimeout(() => {
+              resendBtn.textContent = originalText;
+              if (resendBtn.style) {
+                resendBtn.style.pointerEvents = 'auto';
+              }
+            }, 2000);
+          } catch (error) {
+            console.error('Failed to resend OTP:', error);
+            resendBtn.textContent = 'Failed!';
+            setTimeout(() => {
+              resendBtn.textContent = originalText;
+              if (resendBtn.style) {
+                resendBtn.style.pointerEvents = 'auto';
+              }
+            }, 2000);
+          }
+        })();
+      });
+    };
+    
+    if (navLinks.backToPhone) {
+      navLinks.backToPhone.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        showScreen(appState.authFlow === 'signin' ? 'signin' : 'createAccount');
+      });
+    }
+    
+    // FIXED: Navigate to dashboard screen instead of redirecting to /dashboard
+    if (navLinks.continueToDashboard) {
+      navLinks.continueToDashboard.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        showScreen('dashboard');
+      });
+    }
+    
+    // Splash screen click to continue
+    if (screens.splash) {
+      screens.splash.addEventListener('click', () => {
+        showScreen('signin');
+      });
+    }
+  }
+
+  // Input field enhancement
+  function enhanceInputFields(): void {
+    const inputs = document.querySelectorAll('.form-control');
+    
+    inputs.forEach(input => {
+      // Phone number formatting
+      if ((input as HTMLInputElement).type === 'tel') {
+        input.addEventListener('input', (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          let value = target.value.replace(/[^\d]/g, '');
+          
+          if (value.length > 10) {
+            value = value.slice(0, 10);
+          }
+          
+          target.value = value;
+        });
+        
+        input.addEventListener('keypress', function(this: HTMLElement, e: Event) {
+          const keyEvent = e as KeyboardEvent;
+          if (!/\d/.test(keyEvent.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(keyEvent.key)) {
+            e.preventDefault();
+          }
+        });
+      }
+      
+      // OTP field enhancements
+      if (input.id === 'otp-code') {
+        input.addEventListener('input', (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          let value = target.value.replace(/[^\d]/g, '');
+          
+          if (value.length > 6) {
+            value = value.slice(0, 6);
+          }
+          
+          target.value = value;
+        });
+        
+        input.addEventListener('keypress', function(e) {
+          const event = e as unknown as KeyboardEvent;
+          if (!/\d/.test(event.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(event.key)) {
+            e.preventDefault();
+          }
+        });
+      }
+      
+      // Clear error state on input
+      input.addEventListener('input', () => {
+        input.classList.remove('error');
+        const errorMsg = input.parentNode?.querySelector('.error-message');
+        if (errorMsg) {
+          errorMsg.remove();
+        }
+      });
+    });
+  }
+
+  // Initialize the app
+  initApp();
+});
+</script>
+```

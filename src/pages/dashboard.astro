@@ -1,0 +1,391 @@
+---
+// src/components/Dashboard.astro
+import Layout from '../layouts/layout.astro';
+
+const topics = [
+  {id: 1, name: "Fables", icon: "📚", category: "literature"},
+  {id: 2, name: "Events", icon: "📅", category: "social"},
+  {id: 3, name: "Music", icon: "🎵", category: "arts"},
+  {id: 4, name: "Places", icon: "🏛️", category: "geography"},
+  {id: 5, name: "Food", icon: "🍽️", category: "culture"},
+  {id: 6, name: "People", icon: "👥", category: "social"},
+  {id: 7, name: "Literature", icon: "📖", category: "literature"},
+  {id: 8, name: "Architecture", icon: "🏗️", category: "culture"},
+  {id: 9, name: "Skills", icon: "⚡", category: "education"},
+  {id: 10, name: "Images", icon: "🖼️", category: "media"},
+  {id: 11, name: "Culture", icon: "🎭", category: "culture"},
+  {id: 12, name: "Flora & fauna", icon: "🌿", category: "nature"},
+  {id: 13, name: "Education", icon: "🎓", category: "education"},
+  {id: 14, name: "Vegetation", icon: "🌱", category: "nature"}
+];
+
+const mediaTypes = [
+  {id: 1, name: "Audio", icon: "🎙️", description: "Record audio for this topic"},
+  {id: 2, name: "Image", icon: "📷", description: "Upload images for this topic"},
+  {id: 3, name: "Video", icon: "🎥", description: "Record video for this topic"},
+  {id: 4, name: "Text", icon: "📝", description: "Write text for this topic"}
+];
+
+const userStats = {
+  hoursOfVoice: 0,
+  creditScore: 0
+};
+---
+<Layout>
+<div id="dashboard-screen" class="screen">
+  <!-- Side Navigation Overlay -->
+  <div id="side-nav-overlay" class="side-nav-overlay"></div>
+  
+  <!-- Side Navigation Menu -->
+  <div id="side-nav" class="side-nav">
+    <div class="side-nav-header">
+      <button id="close-nav" class="close-nav-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="side-nav-content">
+      <a href="#" data-nav="dashboard" class="nav-item active">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" data-nav="recordings" class="nav-item">
+        <span class="nav-icon">🎙️</span>
+        <span>Recordings</span>
+      </a>
+      <a href="#" data-nav="profile" class="nav-item">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+      <a href="#" data-nav="feedback" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span>Feedback</span>
+      </a>
+      <a href="#" data-nav="faqs" class="nav-item">
+        <span class="nav-icon">❓</span>
+        <span>FAQs</span>
+      </a>
+      <a href="#" data-nav="help" class="nav-item">
+        <span class="nav-icon">📋</span>
+        <span>Help</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
+        <button id="menu-toggle" class="menu-toggle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <h1 class="dashboard-title">తెలుగు భాష పంపుడు</h1>
+      </div>
+      <div class="header-right">
+        <div class="user-profile" id="user-profile">
+          <svg width="32" height="32" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+            <circle cx="40" cy="30" r="12" fill="#fff"/>
+            <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- User Stats -->
+    <div class="user-stats">
+      <div class="stat-item">
+        <span class="stat-label">Hours of voice</span>
+        <span class="stat-value">{userStats.hoursOfVoice}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Credit score</span>
+        <span class="stat-value">{userStats.creditScore}</span>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-main">
+      <!-- Main Dashboard View -->
+      <div id="dashboard-view" class="dashboard-view active">
+        <div class="prompt-section">
+          <h2 class="prompt-title">What do you want to speak about?</h2>
+          <p class="prompt-subtitle">Select a category to get topic ideas</p>
+        </div>
+
+        <div class="topics-grid">
+          {topics.map(topic => (
+            <button class="topic-card" data-topic={topic.name.toLowerCase().replace(/\s+/g, '-')}>
+              <span class="topic-icon">{topic.icon}</span>
+              <span class="topic-name">{topic.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Topic Detail View (initially hidden) -->
+      <div id="topic-detail-view" class="topic-detail-view">
+        <div class="topic-header">
+          <button id="back-to-dashboard" class="back-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Back</span>
+          </button>
+          <h2 id="selected-topic-title" class="selected-topic-title">Selected Topic</h2>
+        </div>
+        
+        <p class="topic-instruction">Choose how you want to contribute:</p>
+        
+        <div class="media-options-grid">
+          {mediaTypes.map(media => (
+            <button class="media-option-card" data-media-type={media.name.toLowerCase()}>
+              <span class="media-icon">{media.icon}</span>
+              <span class="media-name">{media.name}</span>
+              <span class="media-description">{media.description}</span>
+            </button>
+          ))}
+        </div>
+
+        <!-- Recording interface (shown only after selecting Audio) -->
+        <div id="recording-interface" class="recording-interface hidden">
+          <button id="mic-button" class="mic-button">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="mic-instruction">Tap the mic to start recording</p>
+        </div>
+
+        <!-- Image Upload Interface (hidden by default) -->
+        <div id="image-interface" class="media-interface hidden">
+          <label for="image-upload" class="upload-button">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Upload Image</span>
+          </label>
+          <input type="file" id="image-upload" accept="image/*" class="hidden-input">
+          <p class="upload-instruction">Select an image from your device</p>
+        </div>
+
+        <!-- Video Interface (hidden by default) -->
+        <div id="video-interface" class="media-interface hidden">
+          <button id="video-button" class="video-button">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 8l6 4-6 4V8z" fill="currentColor"/>
+            </svg>
+            <span>Start Recording</span>
+          </button>
+          <p class="video-instruction">Tap to start recording video</p>
+        </div>
+
+        <!-- Text Interface (hidden by default) -->
+        <div id="text-interface" class="media-interface hidden">
+          <textarea id="text-input" class="text-input" placeholder="Write your text here..."></textarea>
+          <button id="submit-text" class="submit-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Submit</span>
+          </button>
+          <p class="text-instruction">Write and submit your text</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const dashboardScreen = document.getElementById('dashboard-screen');
+  if (!dashboardScreen) return;
+
+  // Dashboard elements
+  const dashboardElements = {
+    menuToggle: document.getElementById('menu-toggle'),
+    sideNav: document.getElementById('side-nav'),
+    sideNavOverlay: document.getElementById('side-nav-overlay'),
+    closeNav: document.getElementById('close-nav'),
+    userProfile: document.getElementById('user-profile'),
+    topicCards: document.querySelectorAll('.topic-card'),
+    navItems: document.querySelectorAll('.nav-item'),
+    dashboardView: document.getElementById('dashboard-view'),
+    topicDetailView: document.getElementById('topic-detail-view'),
+    backToDashboard: document.getElementById('back-to-dashboard'),
+    selectedTopicTitle: document.getElementById('selected-topic-title'),
+    mediaOptionCards: document.querySelectorAll('.media-option-card'),
+    recordingInterface: document.getElementById('recording-interface'),
+    imageInterface: document.getElementById('image-interface'),
+    videoInterface: document.getElementById('video-interface'),
+    textInterface: document.getElementById('text-interface'),
+    micButton: document.getElementById('mic-button')
+  };
+
+  // Toggle side navigation
+  function toggleSideNav() {
+    if (dashboardElements.sideNav && dashboardElements.sideNavOverlay) {
+      const isOpen = dashboardElements.sideNav.classList.contains('active');
+      isOpen ? closeSideNav() : openSideNav();
+    }
+  }
+
+  function openSideNav() {
+    dashboardElements.sideNav?.classList.add('active');
+    dashboardElements.sideNavOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSideNav() {
+    dashboardElements.sideNav?.classList.remove('active');
+    dashboardElements.sideNavOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Topic selection
+  function handleTopicSelection(topicElement) {
+    const topicName = topicElement.getAttribute('data-topic');
+    const topicText = topicElement.querySelector('.topic-name').textContent;
+    console.log('Topic clicked:', topicName);
+    
+    // Animate selection
+    topicElement.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      topicElement.style.transform = '';
+      
+      // Update selected topic title
+      if (dashboardElements.selectedTopicTitle) {
+        dashboardElements.selectedTopicTitle.textContent = topicText;
+      }
+      
+      // Switch to topic detail view
+      if (dashboardElements.dashboardView && dashboardElements.topicDetailView) {
+        dashboardElements.dashboardView.classList.remove('active');
+        dashboardElements.topicDetailView.classList.add('active');
+      }
+      
+      // Hide all media interfaces
+      hideAllMediaInterfaces();
+      
+      // Custom event for topic selection
+      document.dispatchEvent(new CustomEvent('topicSelected', {
+        detail: { topic: topicName }
+      }));
+    }, 150);
+  }
+
+  // Back to dashboard
+  function handleBackToDashboard() {
+    if (dashboardElements.dashboardView && dashboardElements.topicDetailView) {
+      dashboardElements.topicDetailView.classList.remove('active');
+      dashboardElements.dashboardView.classList.add('active');
+    }
+  }
+
+  // Media option selection
+  function handleMediaOptionSelection(mediaOptionElement) {
+    const mediaType = mediaOptionElement.getAttribute('data-media-type');
+    console.log('Media type selected:', mediaType);
+    
+    // Animate selection
+    mediaOptionElement.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      mediaOptionElement.style.transform = '';
+      
+      // Show appropriate interface
+      hideAllMediaInterfaces();
+      
+      switch(mediaType) {
+        case 'audio':
+          dashboardElements.recordingInterface?.classList.remove('hidden');
+          break;
+        case 'image':
+          dashboardElements.imageInterface?.classList.remove('hidden');
+          break;
+        case 'video':
+          dashboardElements.videoInterface?.classList.remove('hidden');
+          break;
+        case 'text':
+          dashboardElements.textInterface?.classList.remove('hidden');
+          break;
+      }
+      
+      // Custom event for media selection
+      document.dispatchEvent(new CustomEvent('mediaSelected', {
+        detail: { mediaType: mediaType }
+      }));
+    }, 150);
+  }
+
+  // Hide all media interfaces
+  function hideAllMediaInterfaces() {
+    dashboardElements.recordingInterface?.classList.add('hidden');
+    dashboardElements.imageInterface?.classList.add('hidden');
+    dashboardElements.videoInterface?.classList.add('hidden');
+    dashboardElements.textInterface?.classList.add('hidden');
+  }
+
+  // Navigation handling
+  function handleNavigation(navType) {
+    console.log('Navigation:', navType);
+    
+    dashboardElements.navItems.forEach(item => 
+      item.classList.remove('active'));
+    
+    document.querySelector(`[data-nav="${navType}"]`)?.classList.add('active');
+    closeSideNav();
+  }
+
+  // Event listeners
+  if (dashboardElements.menuToggle) {
+    dashboardElements.menuToggle.addEventListener('click', toggleSideNav);
+  }
+  
+  if (dashboardElements.closeNav) {
+    dashboardElements.closeNav.addEventListener('click', closeSideNav);
+  }
+  
+  if (dashboardElements.sideNavOverlay) {
+    dashboardElements.sideNavOverlay.addEventListener('click', closeSideNav);
+  }
+  
+  if (dashboardElements.backToDashboard) {
+    dashboardElements.backToDashboard.addEventListener('click', handleBackToDashboard);
+  }
+  
+  if (dashboardElements.micButton) {
+    dashboardElements.micButton.addEventListener('click', () => {
+      console.log('Mic button clicked');
+      // Audio recording logic would go here
+    });
+  }
+  
+  dashboardElements.topicCards.forEach(card => {
+    card.addEventListener('click', () => handleTopicSelection(card));
+  });
+  
+  dashboardElements.mediaOptionCards.forEach(card => {
+    card.addEventListener('click', () => handleMediaOptionSelection(card));
+  });
+  
+  dashboardElements.navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleNavigation(item.getAttribute('data-nav'));
+    });
+  });
+
+  // Initialize with dashboard view
+  if (dashboardElements.dashboardView && dashboardElements.topicDetailView) {
+    dashboardElements.dashboardView.classList.add('active');
+    dashboardElements.topicDetailView.classList.remove('active');
+  }
+});
+</script>
+</Layout>
