@@ -11,6 +11,8 @@ import '../styles/global-styles.css';
 const isAuthenticated = false; // Replace with actual auth check
 
 // Redirect logic would go here in a real application
+const response = await fetch('/api/nettoolkit');
+const result = await response.json();
 ---
 <Layout>
 <Layout title="Swecha - Telugu Language Recognition">
@@ -29,6 +31,11 @@ const isAuthenticated = false; // Replace with actual auth check
         <div class="app-subtitle">A product by <strong>Swecha</strong></div>
       </div>
     </div>
+    <!-- ✅ API Response Output (You can style this later) -->
+<div class="api-response">
+  <h2>Nettoolkit API Response:</h2>
+  <pre>{JSON.stringify(result, null, 2)}</pre>
+</div>
 
     <!-- Sign In Screen -->
     <div id="signin-screen" class="screen">
