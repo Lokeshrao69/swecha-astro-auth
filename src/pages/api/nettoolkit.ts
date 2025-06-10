@@ -1,4 +1,4 @@
-export async function GET() {
+/*export async function GET() {
   const apiKey = import.meta.env.NETTOOLKIT_API_KEY;
 
   const res = await fetch("https://api.nettoolkit.com/v1/account/test-api-keys", {
