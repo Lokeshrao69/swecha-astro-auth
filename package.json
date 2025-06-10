@@ -1,5 +1,19 @@
 {
+  "name": "swecha-astro-auth",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Swecha Telugu Language Recognition - Astro Authentication System",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
   "dependencies": {
-    "astro": "^5.8.1"
+    "astro": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
   }
 }
