@@ -1,7 +1,7 @@
 // src/pages/api/auth/verify-otp.js
 // API endpoint for verifying the OTP entered by the user
 
-export async function post({ request }) {
+export async function POST({ request }) {
   try {
     // Parse request body
     const data = await request.json();
