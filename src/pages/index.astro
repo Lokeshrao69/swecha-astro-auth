@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/layout.astro';
 import '../styles/global-styles.css';
+import Dashboard from '../pages/dashboard.astro'
 ---
 <Layout title="Swecha - Telugu Language Recognition">
   <div class="app-container">
@@ -82,19 +83,11 @@ import '../styles/global-styles.css';
             <div class="form-group">
               <input type="date" id="dob" class="form-control" placeholder="Date of Birth" required>
             </div>
-            <div class="form-group tooltip">
-              <button type="button" id="location-btn" class="btn btn--secondary btn--full-width location-btn">
-                <span id="location-btn-text">Allow Location Access</span>
-                <span id="location-icon">📍</span>
-              </button>
-              <span id="location-status" class="location-status"></span>
-              <span class="tooltip-text">Location access is required to create an account</span>
-            </div>
             <div class="form-group">
               <input type="tel" id="create-phone" class="form-control" placeholder="Phone Number" required>
             </div>
           </div>
-          <button type="submit" id="create-account-submit" class="btn btn--primary btn--full-width ripple" disabled>CREATE ACCOUNT</button>
+          <button type="submit" id="create-account-submit" class="btn btn--primary btn--full-width ripple">CREATE ACCOUNT</button>
         </form>
 
         <div class="auth-footer">
@@ -150,215 +143,7 @@ import '../styles/global-styles.css';
       </div>
     </div>
 
-    <!-- Dashboard Screen -->
-    <div id="dashboard-screen" class="screen">
-      <div class="dashboard-container">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-          <div class="header-left">
-            <button id="menu-toggle" class="menu-toggle">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            <h1 class="dashboard-title">తెలుగు భాష గుర్తింపు</h1>
-          </div>
-          <div class="user-profile">
-            <div class="profile-icon small">
-              <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-                <circle cx="40" cy="30" r="12" fill="#fff"/>
-                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- User Stats -->
-        <div class="user-stats">
-          <div class="stat-item">
-            <span class="stat-label">Sessions</span>
-            <span class="stat-value">0</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Accuracy</span>
-            <span class="stat-value">0%</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Hours</span>
-            <span class="stat-value">0h</span>
-          </div>
-        </div>
-
-        <!-- Main Dashboard Content -->
-        <div class="dashboard-main">
-          <!-- Dashboard View -->
-          <div id="dashboard-view" class="dashboard-view active">
-            <div class="prompt-section">
-              <h2 class="prompt-title">Choose a topic to practice</h2>
-              <p class="prompt-subtitle">Select from various categories to improve your Telugu language skills</p>
-            </div>
-
-            <!-- Topics Grid -->
-            <div class="topics-grid">
-              <a href="#" class="topic-card" data-topic="animals">
-                <div class="topic-icon">🦁</div>
-                <div class="topic-name">Animals</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="colors">
-                <div class="topic-icon">🎨</div>
-                <div class="topic-name">Colors</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="numbers">
-                <div class="topic-icon">🔢</div>
-                <div class="topic-name">Numbers</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="family">
-                <div class="topic-icon">👨‍👩‍👧‍👦</div>
-                <div class="topic-name">Family</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="food">
-                <div class="topic-icon">🍛</div>
-                <div class="topic-name">Food</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="body">
-                <div class="topic-icon">👤</div>
-                <div class="topic-name">Body Parts</div>
-              </a>
-              <a href="#" class="topic-card" data-topic="nature">
-                <div class="topic-icon">🌳</div>
-                <div class="topic-name">Nature</div>
-              </a>
-            </div>
-          </div>
-
-          <!-- Topic Detail View -->
-          <div id="topic-detail-view" class="topic-detail-view">
-            <div class="topic-header">
-              <button id="back-to-dashboard" class="back-button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="m12 19-7-7 7-7"></path>
-                  <path d="M19 12H5"></path>
-                </svg>
-                Back
-              </button>
-              <h2 id="selected-topic-title" class="selected-topic-title">Topic Name</h2>
-            </div>
-
-            <p class="topic-instruction">Choose how you'd like to practice this topic</p>
-
-            <!-- Media Options Grid -->
-            <div class="media-options-grid">
-              <div class="media-option-card" data-media="voice">
-                <div class="media-icon">🎤</div>
-                <div class="media-name">Voice</div>
-                <div class="media-description">Record your pronunciation</div>
-              </div>
-              <div class="media-option-card" data-media="text">
-                <div class="media-icon">✏️</div>
-                <div class="media-name">Text</div>
-                <div class="media-description">Type in Telugu script</div>
-              </div>
-              <div class="media-option-card" data-media="audio">
-                <div class="media-icon">🔊</div>
-                <div class="media-name">Audio</div>
-                <div class="media-description">Upload audio file</div>
-              </div>
-              <div class="media-option-card" data-media="video">
-                <div class="media-icon">📹</div>
-                <div class="media-name">Video</div>
-                <div class="media-description">Record or upload video</div>
-              </div>
-            </div>
-
-            <!-- Media Interfaces -->
-            <div id="voice-interface" class="media-interface hidden">
-              <div class="recording-interface">
-                <button id="mic-button" class="mic-button">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="m12 1 0 22"></path>
-                    <path d="m17 5h0a5 5 0 0 1 0 10"></path>
-                    <path d="m21 3h0a9 9 0 0 1 0 18"></path>
-                    <path d="m7 5h0a5 5 0 0 0 0 10"></path>
-                    <path d="m3 3h0a9 9 0 0 0 0 18"></path>
-                  </svg>
-                </button>
-                <p class="mic-instruction">Click to start recording</p>
-              </div>
-            </div>
-
-            <div id="text-interface" class="media-interface hidden">
-              <textarea id="text-input" class="text-input" placeholder="Type in Telugu..."></textarea>
-              <button id="submit-text" class="submit-button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                </svg>
-                Submit
-              </button>
-              <p class="text-instruction">Type your response in Telugu</p>
-            </div>
-
-            <div id="audio-interface" class="media-interface hidden">
-              <button id="upload-audio" class="upload-button">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17,8 12,3 7,8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Upload Audio
-              </button>
-              <input type="file" id="audio-file" class="hidden-input" accept="audio/*">
-              <p class="upload-instruction">Upload an audio file</p>
-            </div>
-
-            <div id="video-interface" class="media-interface hidden">
-              <button id="video-button" class="video-button">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="23,7 16,12 23,17"></polygon>
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                </svg>
-                Record Video
-              </button>
-              <p class="video-instruction">Record or upload a video</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Side Navigation -->
-      <div id="side-nav-overlay" class="side-nav-overlay"></div>
-      <div id="side-nav" class="side-nav">
-        <div class="side-nav-header">
-          <button id="close-nav" class="close-nav-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <div class="side-nav-content">
-          <a href="#" class="nav-item active" data-view="dashboard">
-            <span class="nav-icon">🏠</span>
-            Dashboard
-          </a>
-          <a href="#" class="nav-item" data-view="profile">
-            <span class="nav-icon">👤</span>
-            Profile
-          </a>
-          <a href="#" class="nav-item" data-view="progress">
-            <span class="nav-icon">📊</span>
-            Progress
-          </a>
-          <a href="#" class="nav-item" data-view="settings">
-            <span class="nav-icon">⚙️</span>
-            Settings
-          </a>
-        </div>
-      </div>
-    </div>
+    <Dashboard />
 
     <!-- New Account Required Notification -->
     <div id="account-required-overlay" class="lock-overlay">
@@ -378,6 +163,44 @@ import '../styles/global-styles.css';
 </Layout>
 
 <script>
+// REAL OTP API INTEGRATION - Import your auth-api functions
+const BASE_URL = 'https://backend2.swecha.org/api/v1/auth';
+
+// Your actual API functions from auth-api.ts
+async function sendOtp(phone_number) {
+  const res = await fetch(`${BASE_URL}/send-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone_number }),
+  });
+
+  return res.ok ? await res.json() : Promise.reject(await res.json());
+}
+
+async function verifyOtp(phone_number, otp_code) {
+  const res = await fetch(`${BASE_URL}/verify-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      phone_number,
+      otp_code,
+      has_given_consent: true,
+    }),
+  });
+
+  return res.ok ? await res.json() : Promise.reject(await res.json());
+}
+
+async function resendOtp(phone_number) {
+  const res = await fetch(`${BASE_URL}/resend-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone_number }),
+  });
+
+  return res.ok ? await res.json() : Promise.reject(await res.json());
+}
+
 // Client-side JavaScript - will run in the browser
 document.addEventListener('DOMContentLoaded', () => {
   // TypeScript type definitions
@@ -388,13 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionToken: string | null;
     isAuthenticated: boolean;
     hasAccount: boolean;
-    locationGranted: boolean;
     userData: {
       name: string;
       email: string;
       gender: string;
       dob: string;
-      location: { lat: number; lng: number } | null;
     };
   };
 
@@ -411,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
       email?: string;
       gender?: string;
       dob?: string;
-      location?: { lat: number; lng: number } | null;
     };
   };
 
@@ -435,17 +255,18 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionToken: null,
     isAuthenticated: false,
     hasAccount: false,
-    locationGranted: false,
     userData: {
       name: '',
       email: '',
       gender: '',
-      dob: '',
-      location: null
+      dob: ''
     }
   };
 
-  // DOM Elements - Include dashboard screen
+  // Registered users database (for demo purposes)
+  const registeredUsers = new Set<string>();
+
+  // DOM Elements
   const screens: Screens = {
     splash: document.getElementById('splash-screen'),
     signin: document.getElementById('signin-screen'),
@@ -468,13 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
     resendOtp: document.getElementById('resend-otp'),
     backToPhone: document.getElementById('back-to-phone'),
     continueToDashboard: document.getElementById('continue-to-dashboard'),
-    locationBtn: document.getElementById('location-btn'),
     goToCreateFromOverlay: document.getElementById('go-to-create-from-overlay')
   };
 
   const createAccountSubmitBtn = document.getElementById('create-account-submit') as HTMLButtonElement;
-  const locationBtnText = document.getElementById('location-btn-text');
-  const locationIcon = document.getElementById('location-icon');
   const notification = document.getElementById('notification');
   const notificationMessage = document.querySelector('.notification-message');
   const notificationClose = document.querySelector('.notification-close');
@@ -579,10 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!data.dob) {
         errors.dob = 'Date of birth is required';
       }
-      
-      if (!appState.locationGranted || !data.location) {
-        errors.location = 'Location access is required';
-      }
     }
     
     if (data.otp !== undefined) {
@@ -621,8 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
           inputField = document.getElementById('gender');
         } else if (field === 'dob') {
           inputField = document.getElementById('dob');
-        } else if (field === 'location') {
-          inputField = document.getElementById('location-btn');
         } else {
           inputField = document.getElementById(`${formType}-${field}`);
         }
@@ -658,21 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Check if user has account
-  async function checkUserAccount(phone: string): Promise<boolean> {
-    // This would be an API call to check if the user exists
+  // Check if user has account (for demo purposes)
+  function checkUserAccount(phone: string): boolean {
     console.log(`Checking if user with phone ${phone} exists`);
-    
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Demo check: phone numbers ending with even digits are "existing accounts"
-        const lastDigit = parseInt(phone.charAt(phone.length - 1));
-        const hasAccount = lastDigit % 2 === 0;
-        appState.hasAccount = hasAccount;
-        resolve(hasAccount);
-      }, 1000);
-    });
+    const hasAccount = registeredUsers.has(phone);
+    console.log(`User ${phone} exists: ${hasAccount}`);
+    appState.hasAccount = hasAccount;
+    return hasAccount;
   }
 
   // Show account required overlay
@@ -698,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Form submission handling
+  // Form submission handling - UPDATED TO USE REAL OTP API
   async function handleFormSubmit(formType: string, event: Event): Promise<void> {
     event.preventDefault();
     
@@ -735,7 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.email = emailInput?.value || '';
       formData.gender = genderInput?.value || '';
       formData.dob = dobInput?.value || '';
-      formData.location = appState.userData.location;
       formData.action = 'signup';
       appState.authFlow = 'signup';
       
@@ -744,8 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: formData.name,
         email: formData.email,
         gender: formData.gender,
-        dob: formData.dob,
-        location: formData.location
+        dob: formData.dob
       };
     } else if (formType === 'otp') {
       const otpInput = document.getElementById('otp-code') as HTMLInputElement;
@@ -765,10 +567,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     try {
-      // API integration points
+      // REAL API INTEGRATION POINTS
       if (formType === 'signin') {
-        // Check if user exists
-        const userExists = await checkUserAccount(formData.phone);
+        // Check if user exists (for demo purposes)
+        const userExists = checkUserAccount(formData.phone);
         
         if (!userExists) {
           // User doesn't have an account, show overlay
@@ -778,339 +580,120 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
         
-        // Call send OTP API
-        const response = await sendOTP(formData.phone, formData.action);
+        // Call REAL send OTP API
+        console.log('Sending OTP to:', formData.phone);
+        const response = await sendOtp(formData.phone);
+        console.log('OTP API Response:', response);
         
-        if (response.success) {
-          // Store phone and session token for OTP verification
-          appState.currentPhone = formData.phone;
-          appState.sessionToken = response.sessionToken || '';
-          
-          // Update OTP screen with phone number
-          const phoneDisplay = document.getElementById('otp-phone-display');
-          if (phoneDisplay) {
-            phoneDisplay.textContent = `+${formData.phone}`;
-          }
-          
-          // Update OTP heading based on flow
-          const otpHeading = document.getElementById('otp-heading');
-          if (otpHeading) {
-            otpHeading.textContent = appState.authFlow === 'signin' 
-              ? 'Sign in to your account' 
-              : 'Create your account';
-          }
-          
-          showScreen('otp');
-        } else {
-          // Show error
-          const errors = { phone: response.message || 'Failed to send OTP' };
-          showFormErrors(formType, errors);
+        // Store phone for OTP verification
+        appState.currentPhone = formData.phone;
+        
+        // Update OTP screen with phone number
+        const phoneDisplay = document.getElementById('otp-phone-display');
+        if (phoneDisplay) {
+          phoneDisplay.textContent = `+91 ${formData.phone}`;
         }
+        
+        // Update OTP heading based on flow
+        const otpHeading = document.getElementById('otp-heading');
+        if (otpHeading) {
+          otpHeading.textContent = 'Sign in to your account';
+        }
+        
+        showScreen('otp');
+        showNotification('OTP sent successfully!', 'success');
+        
       } else if (formType === 'createAccount') {
-        // Call send OTP API
-        const response = await sendOTP(formData.phone, formData.action, appState.userData);
+        // Check if user already exists
+        const userExists = checkUserAccount(formData.phone);
         
-        if (response.success) {
-          // Store phone and session token for OTP verification
-          appState.currentPhone = formData.phone;
-          appState.sessionToken = response.sessionToken || '';
-          
-          // Update OTP screen with phone number
-          const phoneDisplay = document.getElementById('otp-phone-display');
-          if (phoneDisplay) {
-            phoneDisplay.textContent = `+${formData.phone}`;
-          }
-          
-          // Update OTP heading based on flow
-          const otpHeading = document.getElementById('otp-heading');
-          if (otpHeading) {
-            otpHeading.textContent = 'Create your account';
-          }
-          
-          // Save data temporarily
-          localStorage.setItem('tempUserData', JSON.stringify(appState.userData));
-          
-          showScreen('otp');
-        } else {
-          // Show error
-          const errors = { phone: response.message || 'Failed to send OTP' };
-          showFormErrors(formType, errors);
+        if (userExists) {
+          // User already exists, redirect to signin
+          form.classList.remove('loading');
+          submitButton.textContent = originalText;
+          showNotification('Phone number already registered. Please sign in instead.', 'warning');
+          setTimeout(() => {
+            showScreen('signin');
+          }, 2000);
+          return;
         }
+        
+        // Register the user (add to demo database)
+        registeredUsers.add(formData.phone);
+        
+        // Call REAL send OTP API for new account
+        console.log('Sending OTP for new account to:', formData.phone);
+        const response = await sendOtp(formData.phone);
+        console.log('OTP API Response:', response);
+        
+        // Store phone and user data for OTP verification
+        appState.currentPhone = formData.phone;
+        
+        // Update OTP screen with phone number
+        const phoneDisplay = document.getElementById('otp-phone-display');
+        if (phoneDisplay) {
+          phoneDisplay.textContent = `+91 ${formData.phone}`;
+        }
+        
+        // Update OTP heading
+        const otpHeading = document.getElementById('otp-heading');
+        if (otpHeading) {
+          otpHeading.textContent = 'Create your account';
+        }
+        
+        // Save data temporarily
+        localStorage.setItem('tempUserData', JSON.stringify(appState.userData));
+        
+        showScreen('otp');
+        showNotification('OTP sent successfully!', 'success');
+        
       } else if (formType === 'otp') {
-        // Call verify OTP API
-        const response = await verifyOTP(
-          formData.phone || '', 
-          formData.otp || '', 
-          formData.sessionToken || ''
-        );
+        // Call REAL verify OTP API
+        console.log('Verifying OTP:', formData.otp, 'for phone:', formData.phone);
+        const response = await verifyOtp(formData.phone || '', formData.otp || '');
+        console.log('Verify OTP API Response:', response);
         
-        if (response.success) {
-          // Store auth token (JWT)
-          if (response.token) {
-            localStorage.setItem('authToken', response.token);
-            appState.isAuthenticated = true;
-            
-            // If this was a signup flow, store the user data permanently
-            if (appState.authFlow === 'signup') {
-              const userData = JSON.parse(localStorage.getItem('tempUserData') || '{}');
-              localStorage.setItem('userData', JSON.stringify(userData));
-              localStorage.removeItem('tempUserData');
-              
-              // Set hasAccount to true since they now have an account
-              appState.hasAccount = true;
-            }
-            
-            // For signin flow, go to success then dashboard
-            showScreen('success');
-          } else {
-            // Redirect to signin if from create account flow
-            if (appState.authFlow === 'signup') {
-              showNotification('Account created successfully! Please sign in.', 'success');
-              showScreen('signin');
-            } else {
-              showScreen('success');
-            }
-          }
-        } else {
-          // Show error
-          const errors = { otp: response.message || 'Invalid OTP' };
-          showFormErrors(formType, errors);
+        // Store auth token and mark as authenticated
+        localStorage.setItem('authToken', 'verified_' + Math.random().toString(36).substring(2));
+        appState.isAuthenticated = true;
+        
+        // If this was a signup flow, store the user data permanently
+        if (appState.authFlow === 'signup') {
+          const userData = JSON.parse(localStorage.getItem('tempUserData') || '{}');
+          localStorage.setItem('userData', JSON.stringify(userData));
+          localStorage.removeItem('tempUserData');
+          
+          // Set hasAccount to true since they now have an account
+          appState.hasAccount = true;
         }
+        
+        // Show success screen
+        showScreen('success');
+        showNotification('Phone verified successfully!', 'success');
       }
     } catch (error) {
       console.error('API Error:', error);
       
-      // Show generic error
+      // Show specific error based on the response
+      let errorMessage = 'An error occurred. Please try again.';
+      
+      if (error && typeof error === 'object' && 'message' in error) {
+        errorMessage = error.message as string;
+      } else if (formType === 'signin' || formType === 'createAccount') {
+        errorMessage = 'Failed to send OTP. Please check your phone number.';
+      } else if (formType === 'otp') {
+        errorMessage = 'Invalid OTP. Please try again.';
+      }
+      
       const fieldName = formType === 'otp' ? 'otp' : 'phone';
-      const errors: Record<string, string> = { [fieldName]: 'An error occurred. Please try again.' };
+      const errors: Record<string, string> = { [fieldName]: errorMessage };
       showFormErrors(formType, errors);
+      
+      showNotification(errorMessage, 'error');
     } finally {
       // Reset loading state
       form.classList.remove('loading');
       submitButton.textContent = originalText;
-    }
-  }
-
-  // API integration functions
-  async function sendOTP(phone: string, action: string, userData?: AppState['userData']): Promise<APIResponse> {
-    console.log(`Sending OTP to ${phone} for ${action}`);
-    
-    // Store user data temporarily if this is a signup
-    if (action === 'signup' && userData) {
-      localStorage.setItem('tempUserData', JSON.stringify(userData));
-    }
-    
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          message: 'OTP sent successfully',
-          sessionToken: 'temp_session_token_' + Math.random().toString(36).substring(2)
-        });
-      }, 1500);
-    });
-  }
-
-  async function verifyOTP(phone: string, otp: string, sessionToken: string): Promise<APIResponse> {
-    console.log(`Verifying OTP ${otp} for phone ${phone} with session ${sessionToken}`);
-    
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Check if OTP is '123456' for demo purposes
-        if (otp === '123456') {
-          const tempUserData = JSON.parse(localStorage.getItem('tempUserData') || '{}');
-          
-          // If this was a signup flow, we'll include the user data
-          const userData = appState.authFlow === 'signup' ? tempUserData : {};
-          
-          resolve({
-            success: true,
-            token: 'jwt_token_' + Math.random().toString(36).substring(2),
-            user: {
-              id: 'user_' + Math.random().toString(36).substring(2),
-              phone: phone,
-              ...userData
-            }
-          });
-        } else {
-          resolve({ success: false, message: 'Invalid OTP' });
-        }
-      }, 1500);
-    });
-  }
-
-  // FIXED: Handle location access with improved error handling and proper geolocation options
-  async function handleLocationAccess(): Promise<void> {
-    const locationStatus = document.getElementById('location-status');
-    const locationBtn = navLinks.locationBtn as HTMLButtonElement;
-    
-    // Disable the button while requesting to prevent multiple clicks
-    if (locationBtn) {
-      locationBtn.disabled = true;
-    }
-    
-    if (locationStatus) {
-      locationStatus.textContent = 'Requesting location...';
-      locationStatus.className = 'location-status';
-    }
-    
-    // Geolocation options with proper timeout and accuracy settings
-    const geoOptions = {
-      enableHighAccuracy: true,  // Use GPS if available
-      timeout: 15000,           // 15 second timeout
-      maximumAge: 300000        // Accept cached positions up to 5 minutes old
-    };
-    
-    if (navigator.geolocation) {
-      try {
-        // Convert geolocation to Promise-based approach for better error handling
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(
-            resolve,
-            reject,
-            geoOptions
-          );
-        });
-        
-        // Successfully got location
-        console.log('Location access granted:', position);
-        
-        // Store coordinates (with validation that they're proper numbers)
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        
-        if (typeof lat === 'number' && typeof lng === 'number' && !isNaN(lat) && !isNaN(lng)) {
-          appState.userData.location = {
-            lat: lat,
-            lng: lng
-          };
-          
-          appState.locationGranted = true;
-          
-          if (locationStatus) {
-            locationStatus.textContent = 'Location access granted';
-            locationStatus.classList.add('success');
-          }
-          
-          // Update button style to indicate success
-          if (locationBtn) {
-            locationBtn.classList.add('location-success');
-            
-            if (locationBtnText) {
-              locationBtnText.textContent = 'Location Access Granted';
-            }
-            
-            if (locationIcon) {
-              locationIcon.textContent = '✓';
-            }
-          }
-          
-          // Enable create account button if location is granted
-          if (createAccountSubmitBtn) {
-            createAccountSubmitBtn.disabled = false;
-          }
-        } else {
-          throw new Error('Invalid coordinates received');
-        }
-      } catch (error) {
-        console.error('Error getting location:', error);
-        
-        // Check for specific error codes to provide better feedback
-        if (error instanceof GeolocationPositionError) {
-          switch(error.code) {
-            case error.PERMISSION_DENIED:
-              // Handle permission denied
-              if (locationStatus) {
-                locationStatus.textContent = 'Location permission denied by browser';
-                locationStatus.classList.add('error');
-              }
-              showNotification('Please enable location access in your browser settings and try again.', 'error');
-              break;
-              
-            case error.POSITION_UNAVAILABLE:
-              // Handle position unavailable
-              if (locationStatus) {
-                locationStatus.textContent = 'Location unavailable';
-                locationStatus.classList.add('error');
-              }
-              showNotification('Unable to determine your location. Please try again.', 'warning');
-              break;
-              
-            case error.TIMEOUT:
-              // Handle timeout
-              if (locationStatus) {
-                locationStatus.textContent = 'Location request timed out';
-                locationStatus.classList.add('error');
-              }
-              showNotification('Location request timed out. Please try again.', 'warning');
-              break;
-              
-            default:
-              // Handle other errors
-              if (locationStatus) {
-                locationStatus.textContent = 'Error accessing location';
-                locationStatus.classList.add('error');
-              }
-              showNotification('Error accessing location. Please try again.', 'error');
-          }
-        } else {
-          // Generic error handling for non-GeolocationPositionError errors
-          if (locationStatus) {
-            locationStatus.textContent = 'Error accessing location';
-            locationStatus.classList.add('error');
-          }
-          showNotification('Error accessing your location. Please try again.', 'error');
-        }
-        
-        // Reset state
-        appState.locationGranted = false;
-        appState.userData.location = null;
-        
-        // Keep the create account button disabled
-        if (createAccountSubmitBtn) {
-          createAccountSubmitBtn.disabled = true;
-        }
-        
-        // Reset button appearance for retry
-        if (locationBtn) {
-          locationBtn.classList.remove('location-success');
-          
-          if (locationBtnText) {
-            locationBtnText.textContent = 'Retry Location Access';
-          }
-          
-          if (locationIcon) {
-            locationIcon.textContent = '📍';
-          }
-        }
-      } finally {
-        // Re-enable the button regardless of outcome
-        if (locationBtn) {
-          locationBtn.disabled = false;
-        }
-      }
-    } else {
-      // Browser doesn't support geolocation
-      appState.locationGranted = false;
-      
-      if (locationStatus) {
-        locationStatus.textContent = 'Geolocation not supported';
-        locationStatus.classList.add('error');
-      }
-      
-      // Keep the create account button disabled
-      if (createAccountSubmitBtn) {
-        createAccountSubmitBtn.disabled = true;
-      }
-      
-      // Re-enable the location button
-      if (locationBtn) {
-        locationBtn.disabled = false;
-      }
-      
-      showNotification('Your browser does not support geolocation which is required for account creation.', 'error');
     }
   }
 
@@ -1154,40 +737,39 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     
+    // REAL RESEND OTP FUNCTIONALITY
     if (navLinks.resendOtp) {
-      navLinks.resendOtp.addEventListener('click', function(e: MouseEvent) {
+      navLinks.resendOtp.addEventListener('click', async function(e: MouseEvent) {
         e.preventDefault();
         
         const resendBtn = e.target as HTMLElement;
         const originalText = resendBtn.textContent || 'Resend';
         resendBtn.textContent = 'Sending...';
-        if (resendBtn.style) {
-          resendBtn.style.pointerEvents = 'none';
-        }
+        resendBtn.style.pointerEvents = 'none';
         
-        // Use an IIFE for async operations
-        (async function() {
-          try {
-            await sendOTP(appState.currentPhone || '', appState.authFlow || 'signin');
+        try {
+          // Call REAL resend OTP API
+          console.log('Resending OTP to:', appState.currentPhone);
+          const response = await resendOtp(appState.currentPhone || '');
+          console.log('Resend OTP API Response:', response);
           
-            resendBtn.textContent = 'Sent!';
-            setTimeout(() => {
-              resendBtn.textContent = originalText;
-              if (resendBtn.style) {
-                resendBtn.style.pointerEvents = 'auto';
-              }
-            }, 2000);
-          } catch (error) {
-            console.error('Failed to resend OTP:', error);
-            resendBtn.textContent = 'Failed!';
-            setTimeout(() => {
-              resendBtn.textContent = originalText;
-              if (resendBtn.style) {
-                resendBtn.style.pointerEvents = 'auto';
-              }
-            }, 2000);
-          }
-        })();
+          resendBtn.textContent = 'Sent!';
+          showNotification('OTP resent successfully!', 'success');
+          
+          setTimeout(() => {
+            resendBtn.textContent = originalText;
+            resendBtn.style.pointerEvents = 'auto';
+          }, 3000);
+        } catch (error) {
+          console.error('Failed to resend OTP:', error);
+          resendBtn.textContent = 'Failed!';
+          showNotification('Failed to resend OTP. Please try again.', 'error');
+          
+          setTimeout(() => {
+            resendBtn.textContent = originalText;
+            resendBtn.style.pointerEvents = 'auto';
+          }, 3000);
+        }
       });
     }
     
@@ -1195,13 +777,6 @@ document.addEventListener('DOMContentLoaded', () => {
       navLinks.backToPhone.addEventListener('click', (e: MouseEvent) => {
         e.preventDefault();
         showScreen(appState.authFlow === 'signin' ? 'signin' : 'createAccount');
-      });
-    }
-    
-    // Location button handler
-    if (navLinks.locationBtn) {
-      navLinks.locationBtn.addEventListener('click', () => {
-        handleLocationAccess();
       });
     }
     
