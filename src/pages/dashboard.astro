@@ -70,6 +70,10 @@ const userStats = {
         <span class="nav-icon">📋</span>
         <span>Help</span>
       </a>
+      <a href="#" data-nav="logout" class="nav-item logout">
+        <span class="nav-icon">🚪</span>
+        <span>Logout</span>
+      </a>
     </nav>
   </div>
 
@@ -100,11 +104,11 @@ const userStats = {
     <div class="user-stats">
       <div class="stat-item">
         <span class="stat-label">Hours of voice</span>
-        <span class="stat-value">{userStats.hoursOfVoice}</span>
+        <span class="stat-value" id="hours-value">{userStats.hoursOfVoice}</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Credit score</span>
-        <span class="stat-value">{userStats.creditScore}</span>
+        <span class="stat-value" id="credit-value">{userStats.creditScore}</span>
       </div>
     </div>
 
@@ -153,13 +157,24 @@ const userStats = {
 
         <!-- Recording interface (shown only after selecting Audio) -->
         <div id="recording-interface" class="recording-interface hidden">
-          <button id="mic-button" class="mic-button">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class="recording-controls">
+            <button id="mic-button" class="mic-button">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="recording-info">
+              <p class="mic-instruction">Tap the mic to start recording</p>
+              <div class="recording-timer" id="recording-timer">00:00</div>
+            </div>
+          </div>
+          <button id="upload-audio" class="upload-button hidden">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+            <span>Upload Recording</span>
           </button>
-          <p class="mic-instruction">Tap the mic to start recording</p>
         </div>
 
         <!-- Image Upload Interface (hidden by default) -->
@@ -172,30 +187,59 @@ const userStats = {
           </label>
           <input type="file" id="image-upload" accept="image/*" class="hidden-input">
           <p class="upload-instruction">Select an image from your device</p>
+          <div id="image-preview" class="image-preview hidden"></div>
         </div>
 
         <!-- Video Interface (hidden by default) -->
         <div id="video-interface" class="media-interface hidden">
-          <button id="video-button" class="video-button">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M10 8l6 4-6 4V8z" fill="currentColor"/>
+          <div class="video-container">
+            <video id="video-preview" class="video-preview" autoplay muted></video>
+            <div class="video-controls">
+              <button id="video-button" class="video-button">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                  <path d="M10 8l6 4-6 4V8z" fill="currentColor"/>
+                </svg>
+                <span>Start Recording</span>
+              </button>
+              <div class="video-timer" id="video-timer">00:00</div>
+            </div>
+          </div>
+          <button id="upload-video" class="upload-button hidden">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span>Start Recording</span>
+            <span>Upload Video</span>
           </button>
-          <p class="video-instruction">Tap to start recording video</p>
         </div>
 
         <!-- Text Interface (hidden by default) -->
         <div id="text-interface" class="media-interface hidden">
-          <textarea id="text-input" class="text-input" placeholder="Write your text here..."></textarea>
+          <textarea id="text-input" class="text-input" placeholder="Write your text here in Telugu or English..."></textarea>
           <button id="submit-text" class="submit-button">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span>Submit</span>
+            <span>Submit Text</span>
           </button>
           <p class="text-instruction">Write and submit your text</p>
+        </div>
+      </div>
+
+      <!-- Upload Progress Modal -->
+      <div id="upload-modal" class="upload-modal hidden">
+        <div class="upload-modal-content">
+          <div class="upload-progress">
+            <div class="progress-circle">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="25" fill="none" stroke="#e0e0e0" stroke-width="4"/>
+                <circle id="progress-circle" cx="30" cy="30" r="25" fill="none" stroke="#2196F3" stroke-width="4" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+              </svg>
+              <div class="progress-percentage" id="progress-percentage">0%</div>
+            </div>
+            <h3 id="upload-status">Uploading...</h3>
+            <p id="upload-message">Please wait while we save your contribution</p>
+          </div>
         </div>
       </div>
     </main>
@@ -203,9 +247,19 @@ const userStats = {
 </div>
 
 <script is:inline>
+// Import media utilities
+import { AudioRecorder, VideoRecorder, ImageUploader, TextSubmitter, formatDuration } from '../utils/media-utils.js';
+import { MediaAPI } from '../services/api-service.js';
+import userService from '../services/user-service.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const dashboardScreen = document.getElementById('dashboard-screen');
   if (!dashboardScreen) return;
+
+  // Global variables
+  let currentTopic = '';
+  let audioRecorder = null;
+  let videoRecorder = null;
 
   // Dashboard elements
   const dashboardElements = {
@@ -225,8 +279,73 @@ document.addEventListener('DOMContentLoaded', () => {
     imageInterface: document.getElementById('image-interface'),
     videoInterface: document.getElementById('video-interface'),
     textInterface: document.getElementById('text-interface'),
-    micButton: document.getElementById('mic-button')
+    micButton: document.getElementById('mic-button'),
+    uploadAudioBtn: document.getElementById('upload-audio'),
+    videoButton: document.getElementById('video-button'),
+    uploadVideoBtn: document.getElementById('upload-video'),
+    submitTextBtn: document.getElementById('submit-text'),
+    uploadModal: document.getElementById('upload-modal'),
+    hoursValue: document.getElementById('hours-value'),
+    creditValue: document.getElementById('credit-value')
   };
+  // Initialize dashboard
+  function initDashboard() {
+    loadUserStats();
+    setupEventListeners();
+  }
+
+  // Load user statistics
+  async function loadUserStats() {
+    try {
+      const stats = await MediaAPI.getUserStats();
+      
+      if (dashboardElements.hoursValue) {
+        const hours = Math.floor(stats.total_duration / 3600);
+        dashboardElements.hoursValue.textContent = hours.toString();
+      }
+      
+      if (dashboardElements.creditValue) {
+        dashboardElements.creditValue.textContent = stats.credit_score.toString();
+      }
+    } catch (error) {
+      console.error('Failed to load user stats:', error);
+    }
+  }
+
+  // Show upload progress modal
+  function showUploadModal(status, message) {
+    if (dashboardElements.uploadModal) {
+      dashboardElements.uploadModal.classList.remove('hidden');
+      
+      const statusEl = document.getElementById('upload-status');
+      const messageEl = document.getElementById('upload-message');
+      
+      if (statusEl) statusEl.textContent = status;
+      if (messageEl) messageEl.textContent = message;
+    }
+  }
+
+  // Hide upload progress modal
+  function hideUploadModal() {
+    if (dashboardElements.uploadModal) {
+      dashboardElements.uploadModal.classList.add('hidden');
+    }
+  }
+  // Update upload progress
+  function updateUploadProgress(percentage) {
+    const progressCircle = document.getElementById('progress-circle');
+    const progressPercentage = document.getElementById('progress-percentage');
+    
+    if (progressCircle && progressPercentage) {
+      const circumference = 2 * Math.PI * 25; // radius = 25
+      const offset = circumference - (percentage / 100) * circumference;
+      
+      progressCircle.style.strokeDasharray = circumference.toString();
+      progressCircle.style.strokeDashoffset = offset.toString();
+      
+      progressPercentage.textContent = `${percentage}%`;
+    }
+  }
 
   // Toggle side navigation
   function toggleSideNav() {
@@ -251,17 +370,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Topic selection
   function handleTopicSelection(topicElement) {
     const topicName = topicElement.getAttribute('data-topic');
-    const topicText = topicElement.querySelector('.topic-name').textContent;
+    const topicText = topicElement.querySelector('.topic-name')?.textContent;
     console.log('Topic clicked:', topicName);
     
-    // Animate selection
+    currentTopic = topicText || '';
+    
+    
+     // Animate selection
     topicElement.style.transform = 'scale(0.95)';
     setTimeout(() => {
       topicElement.style.transform = '';
       
       // Update selected topic title
       if (dashboardElements.selectedTopicTitle) {
-        dashboardElements.selectedTopicTitle.textContent = topicText;
+        dashboardElements.selectedTopicTitle.textContent = topicText || '';
       }
       
       // Switch to topic detail view
@@ -272,11 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Hide all media interfaces
       hideAllMediaInterfaces();
-      
-      // Custom event for topic selection
-      document.dispatchEvent(new CustomEvent('topicSelected', {
-        detail: { topic: topicName }
-      }));
     }, 150);
   }
 
@@ -285,6 +402,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dashboardElements.dashboardView && dashboardElements.topicDetailView) {
       dashboardElements.topicDetailView.classList.remove('active');
       dashboardElements.dashboardView.classList.add('active');
+    }
+    
+    // Cleanup any active recordings
+    if (audioRecorder) {
+      audioRecorder.destroy();
+      audioRecorder = null;
+    }
+    
+    if (videoRecorder) {
+      videoRecorder.destroy();
+      videoRecorder = null;
     }
   }
 
@@ -304,24 +432,24 @@ document.addEventListener('DOMContentLoaded', () => {
       switch(mediaType) {
         case 'audio':
           dashboardElements.recordingInterface?.classList.remove('hidden');
+          setupAudioRecording();
           break;
         case 'image':
           dashboardElements.imageInterface?.classList.remove('hidden');
+          setupImageUpload();
           break;
         case 'video':
           dashboardElements.videoInterface?.classList.remove('hidden');
+          setupVideoRecording();
           break;
         case 'text':
           dashboardElements.textInterface?.classList.remove('hidden');
+          setupTextSubmission();
           break;
       }
-      
-      // Custom event for media selection
-      document.dispatchEvent(new CustomEvent('mediaSelected', {
-        detail: { mediaType: mediaType }
-      }));
     }, 150);
   }
+
 
   // Hide all media interfaces
   function hideAllMediaInterfaces() {
@@ -329,11 +457,144 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboardElements.imageInterface?.classList.add('hidden');
     dashboardElements.videoInterface?.classList.add('hidden');
     dashboardElements.textInterface?.classList.add('hidden');
+    
+    // Hide upload buttons
+    dashboardElements.uploadAudioBtn?.classList.add('hidden');
+    dashboardElements.uploadVideoBtn?.classList.add('hidden');
+  }
+
+  // Setup audio recording
+  function setupAudioRecording() {
+    if (audioRecorder) {
+      audioRecorder.destroy();
+    }
+    
+    audioRecorder = new AudioRecorder((state) => {
+      const timer = document.getElementById('recording-timer');
+      if (timer) {
+        timer.textContent = formatDuration(state.duration);
+      }
+      
+      if (dashboardElements.micButton) {
+        if (state.isRecording) {
+          dashboardElements.micButton.classList.add('recording');
+          dashboardElements.micButton.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <rect x="6" y="6" width="12" height="12" fill="currentColor" rx="2"/>
+            </svg>
+          `;
+        } else {
+          dashboardElements.micButton.classList.remove('recording');
+          dashboardElements.micButton.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          `;
+        }
+      }
+      
+      // Show upload button when recording is stopped and we have recorded audio
+      if (!state.isRecording && state.duration > 0) {
+        dashboardElements.uploadAudioBtn?.classList.remove('hidden');
+      }
+    });
+  }
+
+  // Setup video recording
+  function setupVideoRecording() {
+    const videoElement = document.getElementById('video-preview');
+    if (!videoElement) return;
+    
+    if (videoRecorder) {
+      videoRecorder.destroy();
+    }
+    
+    videoRecorder = new VideoRecorder(videoElement, (state) => {
+      const timer = document.getElementById('video-timer');
+      if (timer) {
+        timer.textContent = formatDuration(state.duration);
+      }
+      
+      if (dashboardElements.videoButton) {
+        if (state.isRecording) {
+          dashboardElements.videoButton.classList.add('recording');
+          dashboardElements.videoButton.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <rect x="6" y="6" width="12" height="12" fill="currentColor" rx="2"/>
+            </svg>
+            <span>Stop Recording</span>
+          `;
+        } else {
+          dashboardElements.videoButton.classList.remove('recording');
+          dashboardElements.videoButton.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 8l6 4-6 4V8z" fill="currentColor"/>
+            </svg>
+            <span>Start Recording</span>
+          `;
+        }
+      }
+      
+      // Show upload button when recording is stopped and we have recorded video
+      if (!state.isRecording && state.duration > 0) {
+        dashboardElements.uploadVideoBtn?.classList.remove('hidden');
+      }
+    });
+  }
+  // Setup image upload
+  function setupImageUpload() {
+    const imageUpload = document.getElementById('image-upload');
+    const imagePreview = document.getElementById('image-preview');
+    
+    if (imageUpload) {
+      imageUpload.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (file && imagePreview) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imagePreview.innerHTML = `<img src="${e.target?.result}" alt="Preview" style="max-width: 300px; max-height: 300px; border-radius: 8px;">`;
+            imagePreview.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+          
+          // Auto upload image
+          try {
+            showUploadModal('Uploading Image...', 'Please wait while we save your image');
+            updateUploadProgress(50);
+            
+            await ImageUploader.uploadImage(file, currentTopic);
+            
+            updateUploadProgress(100);
+            setTimeout(() => {
+              hideUploadModal();
+              showSuccessMessage('Image uploaded successfully!');
+              loadUserStats(); // Refresh stats
+            }, 1000);
+          } catch (error) {
+            hideUploadModal();
+            showErrorMessage('Failed to upload image: ' + error.message);
+          }
+        }
+      });
+    }
+  }
+
+
+  // Setup text submission
+  function setupTextSubmission() {
+    // Text submission is handled by the submit button event listener
   }
 
   // Navigation handling
   function handleNavigation(navType) {
     console.log('Navigation:', navType);
+    
+    if (navType === 'logout') {
+      handleLogout();
+      return;
+    }
     
     dashboardElements.navItems.forEach(item => 
       item.classList.remove('active'));
@@ -342,50 +603,200 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSideNav();
   }
 
-  // Event listeners
-  if (dashboardElements.menuToggle) {
-    dashboardElements.menuToggle.addEventListener('click', toggleSideNav);
+  // Handle logout
+  async function handleLogout() {
+    try {
+      await userService.logout();
+      // Redirect to main page
+      window.location.reload();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   }
-  
-  if (dashboardElements.closeNav) {
-    dashboardElements.closeNav.addEventListener('click', closeSideNav);
-  }
-  
-  if (dashboardElements.sideNavOverlay) {
-    dashboardElements.sideNavOverlay.addEventListener('click', closeSideNav);
-  }
-  
-  if (dashboardElements.backToDashboard) {
-    dashboardElements.backToDashboard.addEventListener('click', handleBackToDashboard);
-  }
-  
-  if (dashboardElements.micButton) {
-    dashboardElements.micButton.addEventListener('click', () => {
-      console.log('Mic button clicked');
-      // Audio recording logic would go here
-    });
-  }
-  
-  dashboardElements.topicCards.forEach(card => {
-    card.addEventListener('click', () => handleTopicSelection(card));
-  });
-  
-  dashboardElements.mediaOptionCards.forEach(card => {
-    card.addEventListener('click', () => handleMediaOptionSelection(card));
-  });
-  
-  dashboardElements.navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.preventDefault();
-      handleNavigation(item.getAttribute('data-nav'));
-    });
-  });
 
-  // Initialize with dashboard view
-  if (dashboardElements.dashboardView && dashboardElements.topicDetailView) {
-    dashboardElements.dashboardView.classList.add('active');
-    dashboardElements.topicDetailView.classList.remove('active');
+  // Show success message
+  function showSuccessMessage(message) {
+    // You can integrate with your existing notification system
+    console.log('Success:', message);
   }
+
+  // Show error message
+  function showErrorMessage(message) {
+    // You can integrate with your existing notification system
+    console.error('Error:', message);
+  }
+
+  // Event listeners
+  function setupEventListeners() {
+    // Navigation
+    if (dashboardElements.menuToggle) {
+      dashboardElements.menuToggle.addEventListener('click', toggleSideNav);
+    }
+    
+    if (dashboardElements.closeNav) {
+      dashboardElements.closeNav.addEventListener('click', closeSideNav);
+    }
+    
+    if (dashboardElements.sideNavOverlay) {
+      dashboardElements.sideNavOverlay.addEventListener('click', closeSideNav);
+    }
+    
+    if (dashboardElements.backToDashboard) {
+      dashboardElements.backToDashboard.addEventListener('click', handleBackToDashboard);
+    }
+    
+     // Topic selection
+    dashboardElements.topicCards.forEach(card => {
+      card.addEventListener('click', () => handleTopicSelection(card));
+    });
+    
+    // Media option selection
+    dashboardElements.mediaOptionCards.forEach(card => {
+      card.addEventListener('click', () => handleMediaOptionSelection(card));
+    });
+    
+    // Navigation items
+    dashboardElements.navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const navType = item.getAttribute('data-nav');
+        if (navType) handleNavigation(navType);
+      });
+    });
+    
+    // Audio recording
+    if (dashboardElements.micButton) {
+      dashboardElements.micButton.addEventListener('click', async () => {
+        if (!audioRecorder) return;
+        
+        const state = audioRecorder.getState();
+        
+        if (!state.isRecording) {
+          try {
+            await audioRecorder.startRecording();
+          } catch (error) {
+            showErrorMessage('Failed to start recording: ' + error.message);
+          }
+        } else {
+          try {
+            await audioRecorder.stopRecording();
+          } catch (error) {
+            showErrorMessage('Failed to stop recording: ' + error.message);
+          }
+        }
+      });
+    }
+    
+    // Upload audio
+    if (dashboardElements.uploadAudioBtn) {
+      dashboardElements.uploadAudioBtn.addEventListener('click', async () => {
+        if (!audioRecorder) return;
+        
+        try {
+          showUploadModal('Uploading Audio...', 'Please wait while we save your recording');
+          updateUploadProgress(50);
+          
+          await audioRecorder.uploadRecording(currentTopic);
+          
+          updateUploadProgress(100);
+          setTimeout(() => {
+            hideUploadModal();
+            showSuccessMessage('Audio uploaded successfully!');
+            loadUserStats(); // Refresh stats
+            dashboardElements.uploadAudioBtn?.classList.add('hidden');
+          }, 1000);
+        } catch (error) {
+          hideUploadModal();
+          showErrorMessage('Failed to upload audio: ' + error.message);
+        }
+      });
+    }
+    
+    
+    // Video recording
+    if (dashboardElements.videoButton) {
+      dashboardElements.videoButton.addEventListener('click', async () => {
+        if (!videoRecorder) return;
+        
+        const state = videoRecorder.getState();
+        
+        if (!state.isRecording) {
+          try {
+            await videoRecorder.startRecording();
+          } catch (error) {
+            showErrorMessage('Failed to start video recording: ' + error.message);
+          }
+        } else {
+          try {
+            await videoRecorder.stopRecording();
+          } catch (error) {
+            showErrorMessage('Failed to stop video recording: ' + error.message);
+          }
+        }
+      });
+    }
+    
+     // Upload video
+    if (dashboardElements.uploadVideoBtn) {
+      dashboardElements.uploadVideoBtn.addEventListener('click', async () => {
+        if (!videoRecorder) return;
+        
+        try {
+          showUploadModal('Uploading Video...', 'Please wait while we save your video');
+          updateUploadProgress(50);
+          
+          await videoRecorder.uploadRecording(currentTopic);
+          
+          updateUploadProgress(100);
+          setTimeout(() => {
+            hideUploadModal();
+            showSuccessMessage('Video uploaded successfully!');
+            loadUserStats(); // Refresh stats
+            dashboardElements.uploadVideoBtn?.classList.add('hidden');
+          }, 1000);
+        } catch (error) {
+          hideUploadModal();
+          showErrorMessage('Failed to upload video: ' + error.message);
+        }
+      });
+    }
+    
+     // Submit text
+    if (dashboardElements.submitTextBtn) {
+      dashboardElements.submitTextBtn.addEventListener('click', async () => {
+        const textInput = document.getElementById('text-input');
+        if (!textInput) return;
+        
+        const content = textInput.value.trim();
+        
+        if (!content) {
+          showErrorMessage('Please enter some text');
+          return;
+        }
+        
+        try {
+          showUploadModal('Submitting Text...', 'Please wait while we save your text');
+          updateUploadProgress(50);
+          
+          await TextSubmitter.submitText(content, currentTopic);
+          
+          updateUploadProgress(100);
+          setTimeout(() => {
+            hideUploadModal();
+            showSuccessMessage('Text submitted successfully!');
+            loadUserStats(); // Refresh stats
+            textInput.value = ''; // Clear the input
+          }, 1000);
+        } catch (error) {
+          hideUploadModal();
+          showErrorMessage('Failed to submit text: ' + error.message);
+        }
+      });
+    }
+  }
+
+  // Initialize dashboard
+  initDashboard();
 });
 </script>
 </Layout>
