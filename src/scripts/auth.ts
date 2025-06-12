@@ -1,5 +1,17 @@
 // src/scripts/auth.ts
-import { sendOtp, verifyOtp, resendOtp } from './auth-api.ts';
+import { sendOtp, verifyOtp, resendOtp, createUser, loginUser } from './auth-api.ts';
+
+type UserData = {
+    phone: string;
+    name: string;
+    email: string;
+    gender: string;
+    date_of_birth: string;
+    place: string;
+    password: string;
+    role_ids: number[];
+    has_given_consent: boolean;
+};
 
 // TypeScript type definitions
 type AppState = {
@@ -7,7 +19,10 @@ type AppState = {
     currentScreen: string;
     authFlow: 'signin' | 'signup' | null;
     sessionToken: string | null;
+    accessToken: string | null; // Add this
+    tokenType: string | null;
     isAuthenticated: boolean;
+    userSignupData: Partial<UserData> | null; // Add this line
 };
 
 type Screens = {
@@ -28,7 +43,10 @@ let appState: AppState = {
     currentScreen: 'splash',
     authFlow: null,
     sessionToken: null,
-    isAuthenticated: false
+    accessToken: null,     // Add this
+    tokenType: null,
+    isAuthenticated: false,
+    userSignupData: null
 };
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -42,6 +60,7 @@ const screens: Screens = {
     signin: document.getElementById('signin-screen'),
     createAccount: document.getElementById('create-account-screen'),
     otp: document.getElementById('otp-screen'),
+    userDetails: document.getElementById('user-details-screen'),
     success: document.getElementById('success-screen'),
     dashboard: document.getElementById('dashboard-screen')
 };
@@ -49,7 +68,8 @@ const screens: Screens = {
 const forms: Forms = {
     signin: document.getElementById('signin-form') as HTMLFormElement,
     createAccount: document.getElementById('create-account-form') as HTMLFormElement,
-    otp: document.getElementById('otp-form') as HTMLFormElement
+    otp: document.getElementById('otp-form') as HTMLFormElement,
+    userDetails: document.getElementById('user-details-form') as HTMLFormElement
 };
 
 const navLinks: NavLinks = {
@@ -95,6 +115,13 @@ function validateForm(formType: string, data: Record<string, any>): Record<strin
             errors.phone = 'Please enter a valid 10-digit phone number';
         }
     }
+    if (data.password !== undefined) {
+        if (!data.password || !data.password.trim()) {
+            errors.password = 'Password is required';
+        } else if (data.password.length < 6) {
+            errors.password = 'Password must be at least 6 characters';
+        }
+    }
 
     if (data.otp !== undefined) {
         if (!data.otp || !data.otp.trim()) {
@@ -106,6 +133,36 @@ function validateForm(formType: string, data: Record<string, any>): Record<strin
 
     return errors;
 }
+
+//User Creation
+// async function createUser(userData: UserData) {
+//     try {
+//         const response = await fetch('https://backend2.swecha.org/api/v1/users/', {
+//             method: 'POST',
+//             headers: {
+//                 'accept': 'application/json',
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(userData)
+//         });
+
+//         if (response.status === 201) {
+//             const newUser = await response.json();
+//             console.log('User created successfully:', newUser);
+//             return newUser;
+//         } else if (response.status === 422) {
+//             const errorData = await response.json();
+//             console.error('Validation error:', errorData.detail);
+//             throw new Error('Validation failed');
+//         } else {
+//             throw new Error('Failed to create user');
+//         }
+//     } catch (error) {
+//         console.error('Error creating user:', error);
+//         throw error;
+//     }
+// }
+
 
 // Display form errors
 function showFormErrors(formType: string, errors: Record<string, string>): void {
@@ -195,7 +252,9 @@ async function handleFormSubmit(formType: string, event: Event): Promise<void> {
     const formData: Record<string, any> = {};
     if (formType === 'signin') {
         const phoneInput = document.getElementById('signin-phone') as HTMLInputElement;
+        const passwordInput = document.getElementById('signin-password') as HTMLInputElement;
         formData.phone = phoneInput?.value || '';
+        formData.password = passwordInput?.value || '';
         formData.action = 'signin';
         appState.authFlow = 'signin';
     } else if (formType === 'createAccount') {
@@ -221,14 +280,22 @@ async function handleFormSubmit(formType: string, event: Event): Promise<void> {
 
     try {
         // Use your API functions
-        if (formType === 'signin' || formType === 'createAccount') {
-            // Call your sendOtp API
+        if (formType === 'signin') {
+            await loginUser(formData.phone, formData.password);
+
+            appState.isAuthenticated = true;
+            appState.currentPhone = formData.phone;
+            showScreen('success');
+
+        }
+        else if (formType === 'signin') {
             if (isOtpCooldown) {
                 form.classList.remove('loading');
                 submitButton.textContent = originalText;
                 showFormErrors(formType, { phone: 'Please wait before trying again.' });
                 return;
             }
+
 
             await sendOtp(formData.phone);
 
@@ -256,6 +323,40 @@ async function handleFormSubmit(formType: string, event: Event): Promise<void> {
             // Call your verifyOtp API
             await verifyOtp(formData.phone || '', formData.otp || '');
 
+            if (appState.authFlow === 'signup') {
+                showScreen('userDetails');
+            } else {
+                // For signin, just authenticate
+                appState.isAuthenticated = true;
+                showScreen('success');
+            }
+
+        } else if (formType === 'userDetails') {
+            // Collect all user data
+            const userData: UserData = {
+                phone: appState.currentPhone || '',
+                name: (document.getElementById('user-name') as HTMLInputElement).value,
+                email: (document.getElementById('user-email') as HTMLInputElement).value,
+                gender: (document.getElementById('user-gender') as HTMLSelectElement).value,
+                date_of_birth: (document.getElementById('user-dob') as HTMLInputElement).value,
+                place: (document.getElementById('user-place') as HTMLInputElement).value,
+                password: (document.getElementById('user-password') as HTMLInputElement).value,
+                role_ids: [2], // Default role
+                has_given_consent: (document.getElementById('user-consent') as HTMLInputElement).checked
+            };
+
+            // Validate the form
+            const errors = validateForm('userDetails', userData);
+            if (Object.keys(errors).length > 0) {
+                form.classList.remove('loading');
+                submitButton.textContent = originalText;
+                showFormErrors('userDetails', errors);
+                return;
+            }
+
+            // Create the user
+            await createUser(userData);
+
             // Store auth state
             appState.isAuthenticated = true;
 
@@ -266,12 +367,17 @@ async function handleFormSubmit(formType: string, event: Event): Promise<void> {
         console.error('API Error:', error);
 
         // Show error based on the type
-        const fieldName = formType === 'otp' ? 'otp' : 'phone';
+        let fieldName = 'phone'
         let errorMessage = 'An error occurred. Please try again.';
 
-        if (formType === 'signin' || formType === 'createAccount') {
+        if (formType === 'createAccount') {
             errorMessage = 'Failed to send OTP';
-        } else if (formType === 'otp') {
+        } else if (formType == 'signin'){
+            fieldName = 'password'; // Usually password is wrong
+            errorMessage = 'Invalid phone number or password';
+        }
+        else if (formType === 'otp') {
+            fieldName = 'otp';
             errorMessage = 'Invalid OTP';
         }
 
@@ -297,6 +403,10 @@ function setupEventListeners(): void {
 
     if (forms.otp) {
         forms.otp.addEventListener('submit', (e: Event) => handleFormSubmit('otp', e));
+    }
+
+    if (forms.userDetails) {
+        forms.userDetails.addEventListener('submit', (e: Event) => handleFormSubmit('userDetails', e));
     }
 
     // Navigation
@@ -387,6 +497,15 @@ function enhanceInputFields(): void {
                 if (!/\d/.test(keyEvent.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(keyEvent.key)) {
                     e.preventDefault();
                 }
+            });
+        }
+
+         // Password field enhancements
+        if ((input as HTMLInputElement).type === 'password') {
+            input.addEventListener('input', (e: Event) => {
+                const target = e.target as HTMLInputElement;
+                // Remove any leading/trailing whitespace
+                target.value = target.value.trim();
             });
         }
 

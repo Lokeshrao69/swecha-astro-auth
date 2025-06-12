@@ -1,144 +1,226 @@
 ---
 // src/pages/index.astro - Main application entry point
-import Layout from '../layouts/layout.astro';
-import AuthForm from '../components/auth-form.astro';
-import Dashboard from '../pages/dashboard.astro';
-import '../styles/global-styles.css';
-
+import Layout from "../layouts/layout.astro";
+import AuthForm from "../components/auth-form.astro";
+import Dashboard from "../pages/dashboard.astro";
+import "../styles/global-styles.css";
+import User from "../components/user-details.astro";
 
 // Server-side logic (only runs on the server)
 // Check if user is authenticated
 const isAuthenticated = false; // Replace with actual auth check
-
-
 ---
+
 <Layout>
-<Layout title="Swecha - Telugu Language Recognition">
-  <div class="app-container">
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="screen active">
-      <div class="splash-content">
-        <div class="profile-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-            <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-            <circle cx="40" cy="30" r="12" fill="#fff"/>
-            <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-          </svg>
-        </div>
-        <h1 class="app-title">తెలుగు భాష గుర్తింపు</h1>
-        <div class="app-subtitle">A product by <strong>Swecha</strong></div>
-      </div>
-    </div>
-
-    <!-- Sign In Screen -->
-    <div id="signin-screen" class="screen">
-      <div class="auth-container">
-        <div class="auth-header">
-          <div class="profile-icon small">
-            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-              <circle cx="40" cy="30" r="12" fill="#fff"/>
-              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+  <Layout title="Swecha - Telugu Language Recognition">
+    <div class="app-container">
+      <!-- Splash Screen -->
+      <div id="splash-screen" class="screen active">
+        <div class="splash-content">
+          <div class="profile-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle
+                cx="40"
+                cy="40"
+                r="38"
+                fill="#2196F3"
+                stroke="#fff"
+                stroke-width="4"></circle>
+              <circle cx="40" cy="30" r="12" fill="#fff"></circle>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"></path>
             </svg>
           </div>
-          <h2>Sign in to your account</h2>
-          <p class="auth-subtitle">Enter your phone number to receive OTP</p>
-        </div>
-        
-        <form id="signin-form" class="auth-form">
-          <div class="form-group">
-            <input type="tel" id="signin-phone" class="form-control" placeholder="Enter your phone number here" required>
-          </div>
-          <button type="submit" class="btn btn--primary btn--full-width">SEND OTP</button>
-        </form>
-
-        <div class="auth-footer">
-          <p>Don't have an account? <a href="#" id="go-to-create">Create account</a></p>
+          <h1 class="app-title">తెలుగు భాష గుర్తింపు</h1>
           <div class="app-subtitle">A product by <strong>Swecha</strong></div>
         </div>
       </div>
-    </div>
 
-    <!-- Create Account Screen -->
-    <div id="create-account-screen" class="screen">
-      <div class="auth-container">
-        <div class="auth-header">
-          <div class="profile-icon small">
-            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-              <circle cx="40" cy="30" r="12" fill="#fff"/>
-              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+      <!-- Sign In Screen -->
+      <div id="signin-screen" class="screen">
+        <div class="auth-container">
+          <div class="auth-header">
+            <div class="profile-icon small">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="38"
+                  fill="#2196F3"
+                  stroke="#fff"
+                  stroke-width="4"></circle>
+                <circle cx="40" cy="30" r="12" fill="#fff"></circle>
+                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"></path>
+              </svg>
+            </div>
+            <h2>Sign in to your account</h2>
+            <p class="auth-subtitle">Enter your phone number and password</p>
+          </div>
+
+          <form id="signin-form" class="auth-form">
+            <div class="form-group">
+              <input
+                type="tel"
+                id="signin-phone"
+                class="form-control"
+                placeholder="Enter your phone number"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="password"
+                id="signin-password"
+                class="form-control"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn--primary btn--full-width"
+              >SIGN IN</button
+            >
+          </form>
+
+          <div class="auth-footer">
+            <p>
+              Don't have an account? <a href="#" id="go-to-create"
+                >Create account</a>
+            </p>
+            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create Account Screen -->
+      <div id="create-account-screen" class="screen">
+        <div class="auth-container">
+          <div class="auth-header">
+            <div class="profile-icon small">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="38"
+                  fill="#2196F3"
+                  stroke="#fff"
+                  stroke-width="4"></circle>
+                <circle cx="40" cy="30" r="12" fill="#fff"></circle>
+                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"></path>
+              </svg>
+            </div>
+            <h2>Create your account</h2>
+            <p class="auth-subtitle">Enter your phone number to receive OTP</p>
+          </div>
+
+          <form id="create-account-form" class="auth-form">
+            <div class="form-group">
+              <input
+                type="tel"
+                id="create-phone"
+                class="form-control"
+                placeholder="Enter your phone number here"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn--primary btn--full-width"
+              >SEND OTP</button
+            >
+          </form>
+
+          <div class="auth-footer">
+            <p>
+              Already a member? <a href="#" id="go-to-signin">Sign in here</a>
+            </p>
+            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OTP Verification Screen -->
+      <div id="otp-screen" class="screen">
+        <div class="auth-container">
+          <div class="auth-header">
+            <div class="profile-icon small">
+              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="38"
+                  fill="#2196F3"
+                  stroke="#fff"
+                  stroke-width="4"></circle>
+                <circle cx="40" cy="30" r="12" fill="#fff"></circle>
+                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"></path>
+              </svg>
+            </div>
+            <h2 id="otp-heading">Verify your phone</h2>
+            <p class="otp-subtitle">Enter OTP sent to your phone</p>
+            <p id="otp-phone-display" class="auth-phone-display"></p>
+          </div>
+
+          <form id="otp-form" class="auth-form">
+            <div class="form-group">
+              <input
+                type="text"
+                id="otp-code"
+                class="form-control"
+                placeholder="Enter the OTP sent to your phone"
+                required
+                maxlength="6"
+              />
+            </div>
+            <button type="submit" class="btn btn--primary btn--full-width"
+              >VERIFY OTP</button
+            >
+          </form>
+
+          <div class="auth-footer">
+            <p>Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
+            <p>
+              <a href="#" id="back-to-phone">Use a different phone number</a>
+            </p>
+            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Details -->
+      <User />
+      <!-- Success Screen -->
+      <div id="success-screen" class="screen">
+        <div class="splash-content">
+          <div class="profile-icon">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle
+                cx="40"
+                cy="40"
+                r="38"
+                fill="#4CAF50"
+                stroke="#fff"
+                stroke-width="4"></circle>
+              <path
+                d="M25 40l10 10 20-20"
+                stroke="#fff"
+                stroke-width="4"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
             </svg>
           </div>
-          <h2>Create your account</h2>
-          <p class="auth-subtitle">Enter your phone number to receive OTP</p>
-        </div>
-        
-        <form id="create-account-form" class="auth-form">
-          <div class="form-group">
-
-            <input type="tel" id="create-phone" class="form-control" placeholder="Enter your phone number here" required>
-          </div>
-          <button type="submit" class="btn btn--primary btn--full-width">SEND OTP</button>
-        </form>
-
-        <div class="auth-footer">
-          <p>Already a member? <a href="#" id="go-to-signin">Sign in here</a></p>
-          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+          <h1 class="success-title">Welcome to Swecha!</h1>
+          <p class="success-message">
+            Your account has been verified successfully.
+          </p>
+          <button id="continue-to-dashboard" class="btn btn--primary btn--lg"
+            >Continue to Dashboard</button
+          >
         </div>
       </div>
+
+      <!-- Dashboard Component - Always include it in DOM -->
+      <Dashboard />
     </div>
+  </Layout>
+  <script type="module" src="/src/scripts/auth.ts"></script>
 
-    <!-- OTP Verification Screen -->
-    <div id="otp-screen" class="screen">
-      <div class="auth-container">
-        <div class="auth-header">
-          <div class="profile-icon small">
-            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-              <circle cx="40" cy="30" r="12" fill="#fff"/>
-              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-            </svg>
-          </div>
-          <h2 id="otp-heading">Verify your phone</h2>
-          <p class="otp-subtitle">Enter OTP sent to your phone</p>
-          <p id="otp-phone-display" class="auth-phone-display"></p>
-        </div>
-        
-        <form id="otp-form" class="auth-form">
-          <div class="form-group">
-            <input type="text" id="otp-code" class="form-control" placeholder="Enter the OTP sent to your phone" required maxlength="6">
-          </div>
-          <button type="submit" class="btn btn--primary btn--full-width">VERIFY OTP</button>
-        </form>
-
-        <div class="auth-footer">
-          <p>Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
-          <p><a href="#" id="back-to-phone">Use a different phone number</a></p>
-          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Success Screen -->
-    <div id="success-screen" class="screen">
-      <div class="splash-content">
-        <div class="profile-icon">
-          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-            <circle cx="40" cy="40" r="38" fill="#4CAF50" stroke="#fff" stroke-width="4"/>
-            <path d="M25 40l10 10 20-20" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h1 class="success-title">Welcome to Swecha!</h1>
-        <p class="success-message">Your account has been verified successfully.</p>
-        <button id="continue-to-dashboard" class="btn btn--primary btn--lg">Continue to Dashboard</button>
-      </div>
-    </div>
-
-    <!-- Dashboard Component - Always include it in DOM -->
-    <Dashboard />
-  </div>
+  ```
 </Layout>
-<script type="module" src="/src/scripts/auth.ts"></script>
-
-```
