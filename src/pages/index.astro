@@ -1,843 +1,1405 @@
-  ---
-  import Layout from '../layouts/layout.astro';
-  import '../styles/global-styles.css';
-  import Dashboard from '../pages/dashboard.astro'
-  ---
-  <Layout title="Swecha - Telugu Language Recognition">
-    <div class="app-container">
-      <!-- Splash Screen -->
-      <div id="splash-screen" class="screen active">
-        <div class="splash-content">
-          <div class="profile-icon">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+---
+import Layout from '../layouts/layout.astro';
+import '../styles/global-styles.css';
+---
+
+<Layout title="Swecha - Telugu Language Recognition">
+  <div class="app-container">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen active">
+      <div class="splash-content">
+        <div class="profile-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+            <circle cx="40" cy="30" r="12" fill="#fff"/>
+            <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+          </svg>
+        </div>
+        <h1 class="app-title">తెలుగు భాష గుర్తింపు</h1>
+        <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+      </div>
+    </div>
+
+    <!-- Sign In Screen -->
+    <div id="signin-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
               <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
               <circle cx="40" cy="30" r="12" fill="#fff"/>
               <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
             </svg>
           </div>
-          <h1 class="app-title">తెలుగు భాష గుర్తింపు</h1>
+          <h2>Sign in to your account</h2>
+          <p class="auth-subtitle">Choose your preferred login method</p>
+        </div>
+        
+        <!-- Login Method Selector -->
+        <div class="login-method-selector">
+          <button id="otp-method-btn" class="method-btn active">Login with OTP</button>
+          <button id="password-method-btn" class="method-btn">Login with Password</button>
+        </div>
+        
+        <!-- OTP Login Form -->
+        <form id="signin-form" class="auth-form">
+          <div class="form-group">
+            <input type="tel" id="signin-phone" class="form-control" placeholder="Enter your phone number here" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width ripple">SEND OTP</button>
+        </form>
+
+        <!-- Password Login Form -->
+        <form id="password-signin-form" class="auth-form hidden">
+          <div class="form-group">
+            <input type="tel" id="password-signin-phone" class="form-control" placeholder="Enter your phone number" required>
+          </div>
+          <div class="form-group">
+            <input type="password" id="signin-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width ripple">LOGIN</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="#" id="go-to-create">Create account</a></p>
+          <p><a href="#" id="forgot-password">Forgot password?</a></p>
           <div class="app-subtitle">A product by <strong>Swecha</strong></div>
         </div>
       </div>
+    </div>
 
-      <!-- Sign In Screen -->
-      <div id="signin-screen" class="screen">
-        <div class="auth-container">
-          <div class="auth-header">
-            <div class="profile-icon small">
-              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-                <circle cx="40" cy="30" r="12" fill="#fff"/>
-                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-              </svg>
-            </div>
-            <h2>Sign in to your account</h2>
-            <p class="auth-subtitle">Enter your phone number to receive OTP</p>
-          </div>
-          
-          <form id="signin-form" class="auth-form">
-            <div class="form-group">
-              <input type="tel" id="signin-phone" class="form-control" placeholder="Enter your phone number here" required>
-            </div>
-            <button type="submit" class="btn btn--primary btn--full-width ripple">SEND OTP</button>
-          </form>
-
-          <div class="auth-footer">
-            <p>Don't have an account? <a href="#" id="go-to-create">Create account</a></p>
-            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Create Account Screen -->
-      <div id="create-account-screen" class="screen">
-        <div class="auth-container">
-          <div class="auth-header">
-            <div class="profile-icon small">
-              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-                <circle cx="40" cy="30" r="12" fill="#fff"/>
-                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-              </svg>
-            </div>
-            <h2>Create your account</h2>
-            <p class="auth-subtitle">Please provide your details</p>
-          </div>
-          
-          <form id="create-account-form" class="auth-form">
-            <div class="form-grid">
-              <div class="form-group">
-                <input type="text" id="full-name" class="form-control" placeholder="Full Name" required>
-              </div>
-              <div class="form-group">
-                <input type="email" id="email" class="form-control" placeholder="Email Address" required>
-              </div>
-              <div class="form-group">
-                <select id="gender" class="form-control" required>
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <input type="date" id="dob" class="form-control" placeholder="Date of Birth" required>
-              </div>
-              <div class="form-group">
-                <input type="tel" id="create-phone" class="form-control" placeholder="Phone Number" required>
-              </div>
-            </div>
-            <button type="submit" id="create-account-submit" class="btn btn--primary btn--full-width ripple">CREATE ACCOUNT</button>
-          </form>
-
-          <div class="auth-footer">
-            <p>Already a member? <a href="#" id="go-to-signin">Sign in here</a></p>
-            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- OTP Verification Screen -->
-      <div id="otp-screen" class="screen">
-        <div class="auth-container">
-          <div class="auth-header">
-            <div class="profile-icon small">
-              <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
-                <circle cx="40" cy="30" r="12" fill="#fff"/>
-                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
-              </svg>
-            </div>
-            <h2 id="otp-heading">Verify your phone</h2>
-            <p class="otp-subtitle">Enter OTP sent to your phone</p>
-            <p id="otp-phone-display" class="auth-phone-display"></p>
-          </div>
-          
-          <form id="otp-form" class="auth-form">
-            <div class="form-group">
-              <input type="text" id="otp-code" class="form-control" placeholder="Enter the OTP sent to your phone" required maxlength="6">
-            </div>
-            <button type="submit" class="btn btn--primary btn--full-width ripple">VERIFY OTP</button>
-          </form>
-
-          <div class="auth-footer">
-            <p>Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
-            <p><a href="#" id="back-to-phone">Use a different phone number</a></p>
-            <div class="app-subtitle">A product by <strong>Swecha</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Success Screen -->
-      <div id="success-screen" class="screen">
-        <div class="splash-content">
-          <div class="profile-icon">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-              <circle cx="40" cy="40" r="38" fill="#4CAF50" stroke="#fff" stroke-width="4"/>
-              <path d="M25 40l10 10 20-20" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Create Account Screen -->
+    <div id="create-account-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+              <circle cx="40" cy="30" r="12" fill="#fff"/>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
             </svg>
           </div>
-          <h1 class="success-title">Welcome to Swecha!</h1>
-          <p class="success-message">Your account has been verified successfully.</p>
-          <button id="continue-to-dashboard" class="btn btn--primary btn--lg ripple">Continue to Dashboard</button>
+          <h2>Create your account</h2>
+          <p class="auth-subtitle">Please provide your details</p>
         </div>
-      </div>
+        
+        <form id="create-account-form" class="auth-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <input type="text" id="full-name" class="form-control" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+              <select id="gender" class="form-control" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="date" id="dob" class="form-control" placeholder="Date of Birth" required>
+            </div>
+            <div class="form-group">
+              <input type="tel" id="create-phone" class="form-control" placeholder="Phone Number" required>
+            </div>
+            <div class="form-group">
+              <input type="text" id="location" class="form-control" placeholder="Location (City, State)" required>
+            </div>
+            <div class="form-group">
+              <input type="password" id="create-password" class="form-control" placeholder="Create Password" required>
+            </div>
+            <div class="form-group">
+              <input type="password" id="confirm-password" class="form-control" placeholder="Confirm Password" required>
+            </div>
+          </div>
+          <div class="form-group consent-group">
+            <label class="consent-checkbox">
+              <input type="checkbox" id="consent" required>
+              <span class="checkmark"></span>
+              I agree to the Terms of Service and Privacy Policy
+            </label>
+          </div>
+          <button type="submit" id="create-account-submit" class="btn btn--primary btn--full-width ripple">CREATE ACCOUNT</button>
+        </form>
 
-      <Dashboard />
-
-      <!-- New Account Required Notification -->
-      <div id="account-required-overlay" class="lock-overlay">
-        <div class="lock-message">
-          <h3 class="lock-title">Account Required</h3>
-          <p class="lock-text">You need to create an account before signing in. Would you like to create a new account now?</p>
-          <button id="go-to-create-from-overlay" class="lock-button ripple">Create Account</button>
+        <div class="auth-footer">
+          <p>Already a member? <a href="#" id="go-to-signin">Sign in here</a></p>
+          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
         </div>
-      </div>
-
-      <!-- Notification Component -->
-      <div id="notification" class="notification">
-        <div class="notification-message"></div>
-        <button class="notification-close">&times;</button>
       </div>
     </div>
-  </Layout>
 
-  <script>
-  // Import API services
-  import { AuthAPI } from '../services/api-service';
-  import userService from '../services/user-service';
-
-  // Client-side JavaScript - will run in the browser
-  document.addEventListener('DOMContentLoaded', () => {
-    // TypeScript type definitions
-    type AppState = {
-      currentPhone: string | null;
-      currentScreen: string;
-      authFlow: 'signin' | 'signup' | null;
-      sessionToken: string | null;
-      isAuthenticated: boolean;
-      hasAccount: boolean;
-      userData: {
-        name: string;
-        email: string;
-        gender: string;
-        dob: string;
-      };
-    };
-
-    type APIResponse = {
-      success: boolean;
-      message?: string;
-      sessionToken?: string;
-      token?: string;
-      userExists?: boolean;
-      user?: {
-        id: string;
-        phone: string;
-        name?: string;
-        email?: string;
-        gender?: string;
-        dob?: string;
-      };
-    };
-
-    type Screens = {
-      [key: string]: HTMLElement | null;
-    };
-
-    type Forms = {
-      [key: string]: HTMLFormElement | null;
-    };
-
-    type NavLinks = {
-      [key: string]: HTMLElement | null;
-    };
-
-    // Global state
-    let appState: AppState = {
-      currentPhone: null,
-      currentScreen: 'splash',
-      authFlow: null,
-      sessionToken: null,
-      isAuthenticated: false,
-      hasAccount: false,
-      userData: {
-        name: '',
-        email: '',
-        gender: '',
-        dob: ''
-      }
-    };
-
-    // DOM Elements
-    const screens: Screens = {
-      splash: document.getElementById('splash-screen'),
-      signin: document.getElementById('signin-screen'),
-      createAccount: document.getElementById('create-account-screen'),
-      otp: document.getElementById('otp-screen'),
-      success: document.getElementById('success-screen'),
-      dashboard: document.getElementById('dashboard-screen'),
-      accountRequired: document.getElementById('account-required-overlay')
-    };
-
-    const forms: Forms = {
-      signin: document.getElementById('signin-form') as HTMLFormElement,
-      createAccount: document.getElementById('create-account-form') as HTMLFormElement,
-      otp: document.getElementById('otp-form') as HTMLFormElement
-    };
-
-    const navLinks: NavLinks = {
-      goToCreate: document.getElementById('go-to-create'),
-      goToSignin: document.getElementById('go-to-signin'),
-      resendOtp: document.getElementById('resend-otp'),
-      backToPhone: document.getElementById('back-to-phone'),
-      continueToDashboard: document.getElementById('continue-to-dashboard'),
-      goToCreateFromOverlay: document.getElementById('go-to-create-from-overlay')
-    };
-
-    const createAccountSubmitBtn = document.getElementById('create-account-submit') as HTMLButtonElement;
-    const notification = document.getElementById('notification');
-    const notificationMessage = document.querySelector('.notification-message');
-    const notificationClose = document.querySelector('.notification-close');
-
-    // Show specified screen and hide others
-    function showScreen(screenId: string): void {
-      console.log('Showing screen:', screenId);
-      
-      // Hide all screens
-      Object.values(screens).forEach(screen => {
-        if (screen && screen !== screens.accountRequired) {
-          screen.classList.remove('active');
-        }
-      });
-      
-      // Show the selected screen
-      if (screens[screenId]) {
-        screens[screenId]?.classList.add('active');
-        appState.currentScreen = screenId;
+    <!-- OTP Verification Screen -->
+    <div id="otp-screen" class="screen">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="profile-icon small">
+            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+              <circle cx="40" cy="30" r="12" fill="#fff"/>
+              <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+            </svg>
+          </div>
+          <h2>Enter verification code</h2>
+          <p class="auth-subtitle">We sent a code to <span id="otp-phone-display"></span></p>
+        </div>
         
-        // Update authentication state if showing dashboard
-        if (screenId === 'dashboard') {
-          appState.isAuthenticated = true;
-        }
+        <form id="otp-form" class="auth-form">
+          <div class="otp-input-container">
+            <input type="text" class="otp-input" maxlength="1" data-index="0">
+            <input type="text" class="otp-input" maxlength="1" data-index="1">
+            <input type="text" class="otp-input" maxlength="1" data-index="2">
+            <input type="text" class="otp-input" maxlength="1" data-index="3">
+            <input type="text" class="otp-input" maxlength="1" data-index="4">
+            <input type="text" class="otp-input" maxlength="1" data-index="5">
+          </div>
+          <button type="submit" class="btn btn--primary btn--full-width ripple">VERIFY</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Didn't receive the code? <a href="#" id="resend-otp" class="resend-link">Resend</a></p>
+          <div class="app-subtitle">A product by <strong>Swecha</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="screen">
+      <div class="success-container">
+        <div class="success-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#4CAF50" stroke="#fff" stroke-width="4"/>
+            <path d="M25 40l10 10 20-20" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2>Welcome!</h2>
+        <p class="success-message">Your account has been successfully created and verified.</p>
+        <button id="go-to-dashboard" class="btn btn--primary btn--full-width ripple">CONTINUE TO DASHBOARD</button>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="screen">
+      <div class="dashboard-container">
+        <div class="dashboard-header">
+          <div class="user-profile">
+            <div class="profile-icon small">
+              <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+                <circle cx="40" cy="30" r="12" fill="#fff"/>
+                <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="user-info">
+              <h3 id="user-name">Welcome User</h3>
+              <p id="user-phone"></p>
+            </div>
+          </div>
+          <button id="logout-btn" class="btn btn--secondary">Logout</button>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-number" id="audio-count">0</div>
+            <div class="stat-label">Audio Files</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="video-count">0</div>
+            <div class="stat-label">Video Files</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="image-count">0</div>
+            <div class="stat-label">Images</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="text-count">0</div>
+            <div class="stat-label">Text Records</div>
+          </div>
+        </div>
+
+        <div class="topics-container">
+          <h3>Select a Topic</h3>
+          <div class="topics-grid">
+            <button class="topic-btn" data-topic="health">Health</button>
+            <button class="topic-btn" data-topic="education">Education</button>
+            <button class="topic-btn" data-topic="technology">Technology</button>
+            <button class="topic-btn" data-topic="agriculture">Agriculture</button>
+            <button class="topic-btn" data-topic="business">Business</button>
+            <button class="topic-btn" data-topic="general">General</button>
+          </div>
+        </div>
+
+        <div class="media-container">
+          <div class="media-tabs">
+            <button class="media-tab active" data-type="upload">File Upload</button>
+            <button class="media-tab" data-type="text">Text Input</button>
+          </div>
+
+          <!-- File Upload Interface -->
+          <div id="file-upload-interface" class="media-interface active">
+            <div class="upload-container">
+              <div class="upload-zone" id="upload-zone">
+                <div class="upload-icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <p class="upload-text">Click to select files or drag and drop</p>
+                <p class="upload-subtitle">Supports: Audio (MP3, WAV), Video (MP4), Images (JPG, PNG), Text (TXT)</p>
+                <input type="file" id="file-input" multiple accept=".mp3,.wav,.mp4,.jpg,.jpeg,.png,.txt" class="hidden">
+              </div>
+              
+              <div class="file-preview" id="file-preview"></div>
+              
+              <button id="upload-selected-files" class="btn btn--primary upload-btn hidden">
+                Upload Selected Files
+              </button>
+            </div>
+          </div>
+
+          <!-- Text Input Interface -->
+          <div id="text-input-interface" class="media-interface">
+            <div class="text-container">
+              <div class="form-group">
+                <input type="text" id="text-title" class="form-control" placeholder="Enter title for your text">
+              </div>
+              <div class="form-group">
+                <textarea id="text-content" class="form-control text-area" placeholder="Type your Telugu text here..." rows="6"></textarea>
+              </div>
+              <div class="form-group">
+                <textarea id="text-description" class="form-control" placeholder="Description (optional)" rows="3"></textarea>
+              </div>
+              <button id="submit-text" class="btn btn--primary btn--full-width">Submit Text</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Progress Modal -->
+    <div id="upload-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="upload-progress">
+          <div class="progress-circle">
+            <svg class="progress-ring" width="80" height="80">
+              <circle class="progress-ring-circle" cx="40" cy="40" r="36"></circle>
+            </svg>
+            <span class="progress-text">0%</span>
+          </div>
+          <h3 id="upload-modal-title">Uploading Files...</h3>
+          <p id="upload-modal-message">Please wait while we upload your files</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+      <div class="notification-content">
+        <span id="notification-message"></span>
+        <button id="notification-close">&times;</button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+// Base configuration
+const BASE_URL = 'https://backend2.swecha.org/api/v1';
+
+// Global variables with proper typing
+let currentUser: any = null;
+let currentTopic: string = '';
+let selectedFiles: File[] = [];
+let isLoading = false;
+
+// API Functions with proper error handling and typing
+async function sendOTP(phone_number: string): Promise<any> {
+  const res = await fetch(`${BASE_URL}/auth/send-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone_number }),
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Failed to send OTP');
+  }
+  
+  return await res.json();
+}
+
+async function verifyOTP(phone_number: string, otp: string, action: string): Promise<any> {
+  const res = await fetch(`${BASE_URL}/auth/verify-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone_number, otp, action }),
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'OTP verification failed');
+  }
+  
+  return await res.json();
+}
+
+async function loginWithPassword(phone_number: string, password: string): Promise<any> {
+  const res = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone_number, password }),
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Login failed');
+  }
+  
+  return await res.json();
+}
+
+async function createUser(userData: any): Promise<any> {
+  const res = await fetch(`${BASE_URL}/users/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'User creation failed');
+  }
+  
+  return await res.json();
+}
+
+async function uploadFile(file: File, topic: string, title?: string, description?: string): Promise<any> {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('topic', topic);
+  
+  if (title) formData.append('title', title);
+  if (description) formData.append('description', description);
+  
+  const fileType = file.type.split('/')[0];
+  let mediaType: string;
+  
+  if (fileType === 'audio') mediaType = 'audio';
+  else if (fileType === 'video') mediaType = 'video';
+  else if (fileType === 'image') mediaType = 'image';
+  else if (file.type === 'text/plain') mediaType = 'text';
+  else throw new Error('Unsupported file type');
+  
+  formData.append('media_type', mediaType);
+  
+  const response = await fetch(`${BASE_URL}/records/upload`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    },
+    body: formData
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Upload failed');
+  }
+  
+  return await response.json();
+}
+
+async function submitText(content: string, topic: string, title?: string, description?: string): Promise<any> {
+  const textData = {
+    content,
+    topic,
+    title: title || 'Text Submission',
+    description: description || '',
+    media_type: 'text'
+  };
+  
+  const response = await fetch(`${BASE_URL}/records/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    },
+    body: JSON.stringify(textData)
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Text submission failed');
+  }
+  
+  return await response.json();
+}
+
+async function getUserStats(): Promise<any> {
+  const response = await fetch(`${BASE_URL}/users/me/stats`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to load user statistics');
+  }
+  
+  return await response.json();
+}
+
+// Utility Functions
+function showScreen(screenId: string): void {
+  const screens = document.querySelectorAll('.screen');
+  screens.forEach(screen => {
+    screen.classList.remove('active');
+  });
+  
+  const targetScreen = document.getElementById(screenId);
+  if (targetScreen) {
+    targetScreen.classList.add('active');
+  }
+}
+
+function showNotification(message: string, type: 'success' | 'error' = 'success'): void {
+  const notification = document.getElementById('notification');
+  const messageEl = document.getElementById('notification-message');
+  
+  if (notification && messageEl) {
+    messageEl.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.classList.remove('hidden');
+    
+    setTimeout(() => {
+      notification.classList.add('hidden');
+    }, 5000);
+  }
+}
+
+function showUploadModal(title: string, message: string): void {
+  const modal = document.getElementById('upload-modal');
+  const titleEl = document.getElementById('upload-modal-title');
+  const messageEl = document.getElementById('upload-modal-message');
+  
+  if (modal && titleEl && messageEl) {
+    titleEl.textContent = title;
+    messageEl.textContent = message;
+    modal.classList.remove('hidden');
+  }
+}
+
+function hideUploadModal(): void {
+  const modal = document.getElementById('upload-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+function updateUploadProgress(progress: number): void {
+  const progressText = document.querySelector('.progress-text');
+  const progressCircle = document.querySelector('.progress-ring-circle') as SVGCircleElement;
+  
+  if (progressText) {
+    progressText.textContent = `${Math.round(progress)}%`;
+  }
+  
+  if (progressCircle) {
+    const circumference = 2 * Math.PI * 36;
+    const offset = circumference - (progress / 100) * circumference;
+    progressCircle.style.strokeDasharray = circumference.toString();
+    progressCircle.style.strokeDashoffset = offset.toString();
+  }
+}
+
+async function loadUserStats(): Promise<void> {
+  try {
+    const stats = await getUserStats();
+    
+    const audioCountEl = document.getElementById('audio-count');
+    const videoCountEl = document.getElementById('video-count');
+    const imageCountEl = document.getElementById('image-count');
+    const textCountEl = document.getElementById('text-count');
+    
+    if (audioCountEl) audioCountEl.textContent = stats.audio_count || '0';
+    if (videoCountEl) videoCountEl.textContent = stats.video_count || '0';
+    if (imageCountEl) imageCountEl.textContent = stats.image_count || '0';
+    if (textCountEl) textCountEl.textContent = stats.text_count || '0';
+  } catch (error) {
+    console.error('Failed to load user stats:', error);
+  }
+}
+
+// Form Data Extraction with proper typing
+function getFormData(formId: string): any {
+  const form = document.getElementById(formId) as HTMLFormElement;
+  if (!form) return {};
+  
+  const formData: any = {};
+  const formElements = form.elements;
+  
+  for (let i = 0; i < formElements.length; i++) {
+    const element = formElements[i] as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+    
+    if (element.name || element.id) {
+      const key = element.name || element.id;
+      
+      if (element.type === 'checkbox') {
+        formData[key] = (element as HTMLInputElement).checked;
+      } else if (element.type !== 'submit' && element.type !== 'button') {
+        formData[key] = element.value;
       }
     }
+  }
+  
+  return formData;
+}
 
-    // Initialize app
-    function initApp(): void {
-      console.log('Initializing app...');
+// Event Listeners and Initialization
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize app
+  setTimeout(() => {
+    showScreen('signin');
+  }, 2000);
+
+  // Method selector functionality
+  const otpMethodBtn = document.getElementById('otp-method-btn');
+  const passwordMethodBtn = document.getElementById('password-method-btn');
+  const otpForm = document.getElementById('signin-form');
+  const passwordForm = document.getElementById('password-signin-form');
+
+  otpMethodBtn?.addEventListener('click', () => {
+    if (otpMethodBtn && passwordMethodBtn && otpForm && passwordForm) {
+      otpMethodBtn.classList.add('active');
+      passwordMethodBtn.classList.remove('active');
+      otpForm.classList.remove('hidden');
+      passwordForm.classList.add('hidden');
+    }
+  });
+
+  passwordMethodBtn?.addEventListener('click', () => {
+    if (otpMethodBtn && passwordMethodBtn && otpForm && passwordForm) {
+      passwordMethodBtn.classList.add('active');
+      otpMethodBtn.classList.remove('active');
+      passwordForm.classList.remove('hidden');
+      otpForm.classList.add('hidden');
+    }
+  });
+
+  // OTP Login Form
+  document.getElementById('signin-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = getFormData('signin-form');
+    
+    if (!formData.phone || !(formData.phone as string).trim()) {
+      showNotification('Please enter your phone number', 'error');
+      return;
+    }
+
+    try {
+      isLoading = true;
+      const response = await sendOTP(formData.phone as string);
       
-      // Check if user is already authenticated
-      const userState = userService.getState();
-      if (userState.isAuthenticated) {
-        console.log('User already authenticated, showing dashboard');
+      if (response.success) {
+        currentUser = { 
+          phone: formData.phone as string, 
+          action: 'signin' as string 
+        };
+        
+        const phoneDisplay = document.getElementById('otp-phone-display');
+        if (phoneDisplay) {
+          phoneDisplay.textContent = formData.phone as string;
+        }
+        
+        showScreen('otp');
+      }
+    } catch (error: any) {
+      showNotification(error.message, 'error');
+    } finally {
+      isLoading = false;
+    }
+  });
+
+  // Password Login Form
+  document.getElementById('password-signin-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = getFormData('password-signin-form');
+    
+    if (!formData.phone || !formData.password) {
+      showNotification('Please enter both phone number and password', 'error');
+      return;
+    }
+
+    try {
+      isLoading = true;
+      const response = await loginWithPassword(formData.phone as string, formData.password as string);
+      
+      if (response.success) {
+        localStorage.setItem('authToken', response.access_token);
+        currentUser = { 
+          phone: formData.phone as string, 
+          action: 'signin' as string 
+        };
         showScreen('dashboard');
-        return;
+        await loadUserStats();
       }
-      
-      // Show splash screen and auto-transition to signin
-      showScreen('splash');
-      
-      setTimeout(() => {
-        console.log('Transitioning to signin screen...');
-        showScreen('signin');
-      }, 2500);
+    } catch (error: any) {
+      showNotification(error.message, 'error');
+    } finally {
+      isLoading = false;
+    }
+  });
 
-      // Setup event listeners
-      setupEventListeners();
-      enhanceInputFields();
-      setupNotifications();
-      setupUserServiceListener();
+  // Create Account Form
+  document.getElementById('create-account-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = getFormData('create-account-form');
+    
+    // Validation
+    if (!formData.phone || !formData.name || !formData.email || !formData.gender || !formData.dob || !formData.location || !formData.password || !formData.confirmPassword || !formData.consent) {
+      showNotification('Please fill in all fields and accept the terms', 'error');
+      return;
     }
 
-    // Setup user service state listener
-    function setupUserServiceListener(): void {
-      userService.subscribe((userState) => {
-        appState.isAuthenticated = userState.isAuthenticated;
-        appState.hasAccount = userState.hasAccount;
-        appState.currentPhone = userState.currentPhone;
+    if (formData.password !== formData.confirmPassword) {
+      showNotification('Passwords do not match', 'error');
+      return;
+    }
+
+    const userData = {
+      phone_number: formData.phone as string,
+      name: formData.name as string,
+      email: formData.email as string,
+      gender: formData.gender as string,
+      dob: formData.dob as string,
+      place: formData.location as string,
+      password: formData.password as string,
+      user_consent: formData.consent as boolean
+    };
+
+    try {
+      isLoading = true;
+      const otpResponse = await sendOTP(formData.phone as string);
+      
+      if (otpResponse.success) {
+        currentUser = { 
+          ...userData, 
+          action: 'signup' as string 
+        };
         
-        if (userState.error) {
-          showNotification(userState.error, 'error');
-        }
-      });
-    }
-
-    // Show notification
-    function showNotification(message: string, type: 'error' | 'success' | 'warning' = 'error'): void {
-      if (notification && notificationMessage) {
-        notification.className = 'notification';
-        notification.classList.add(`notification-${type}`);
-        notification.classList.add('active');
-        notificationMessage.textContent = message;
-        
-        setTimeout(() => {
-          hideNotification();
-        }, 5000);
-      }
-    }
-
-    // Hide notification
-    function hideNotification(): void {
-      if (notification) {
-        notification.classList.remove('active');
-      }
-    }
-
-    // Setup notification system
-    function setupNotifications(): void {
-      if (notificationClose) {
-        notificationClose.addEventListener('click', hideNotification);
-      }
-    }
-
-    // Form validation
-    function validateForm(formType: string, data: Record<string, any>): Record<string, string> {
-      const errors: Record<string, string> = {};
-      
-      if (data.phone !== undefined) {
-        const phoneRegex = /^\d{10}$/;
-        if (!data.phone || !data.phone.trim()) {
-          errors.phone = 'Phone number is required';
-        } else if (!phoneRegex.test(data.phone)) {
-          errors.phone = 'Please enter a valid 10-digit phone number';
-        }
-      }
-      
-      if (formType === 'createAccount') {
-        if (!data.name || !data.name.trim()) {
-          errors.name = 'Full name is required';
+        const phoneDisplay = document.getElementById('otp-phone-display');
+        if (phoneDisplay) {
+          phoneDisplay.textContent = formData.phone as string;
         }
         
-        if (!data.email || !data.email.trim()) {
-          errors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-          errors.email = 'Please enter a valid email address';
-        }
-        
-        if (!data.gender) {
-          errors.gender = 'Please select your gender';
-        }
-        
-        if (!data.dob) {
-          errors.dob = 'Date of birth is required';
-        }
+        showScreen('otp');
       }
-      
-      if (data.otp !== undefined) {
-        if (!data.otp || !data.otp.trim()) {
-          errors.otp = 'OTP is required';
-        } else if (data.otp.length !== 6 || !/^\d+$/.test(data.otp)) {
-          errors.otp = 'OTP must be 6 digits';
-        }
-      }
-      
-      return errors;
+    } catch (error: any) {
+      showNotification(error.message, 'error');
+    } finally {
+      isLoading = false;
+    }
+  });
+
+  // OTP Form
+  document.getElementById('otp-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = getFormData('otp-form');
+    
+    if (!formData.otp || !currentUser.phone) {
+      showNotification('Please enter the OTP', 'error');
+      return;
     }
 
-    // Display form errors
-    function showFormErrors(formType: string, errors: Record<string, string>): void {
-      const form = forms[formType];
-      if (!form) return;
+    try {
+      isLoading = true;
+      const response = await verifyOTP(currentUser.phone as string, formData.otp as string, currentUser.sessionToken || currentUser.action as string);
       
-      const errorMessages = form.querySelectorAll('.error-message');
-      errorMessages.forEach(msg => msg.remove());
-      
-      form.querySelectorAll('.form-control').forEach(input => {
-        input.classList.remove('error');
-      });
-      
-      Object.entries(errors).forEach(([field, message]) => {
-        let inputField;
-        if (formType === 'otp' && field === 'otp') {
-          inputField = document.getElementById('otp-code');
-        } else if (formType === 'createAccount') {
-          if (field === 'name') {
-            inputField = document.getElementById('full-name');
-          } else if (field === 'email') {
-            inputField = document.getElementById('email');
-          } else if (field === 'gender') {
-            inputField = document.getElementById('gender');
-          } else if (field === 'dob') {
-            inputField = document.getElementById('dob');
-          } else {
-            inputField = document.getElementById(`${formType}-${field}`);
+      if (response.success) {
+        if (currentUser.action === 'signup') {
+          // Create user account
+          try {
+            await createUser(currentUser);
+            showScreen('success');
+          } catch (createError: any) {
+            showNotification('Account creation failed: ' + createError.message, 'error');
           }
         } else {
-          inputField = document.getElementById(`${formType}-${field}`);
-        }
-        
-        if (inputField) {
-          inputField.classList.add('error');
-          
-          const errorEl = document.createElement('span');
-          errorEl.className = 'error-message';
-          errorEl.textContent = message;
-          
-          const parent = inputField.parentNode;
-          if (parent) {
-            parent.appendChild(errorEl);
-          }
-        }
-      });
-    }
-
-    // Clear form errors
-    function clearFormErrors(formType: string): void {
-      const form = forms[formType];
-      if (!form) return;
-      
-      const errorMessages = form.querySelectorAll('.error-message');
-      errorMessages.forEach(msg => msg.remove());
-      
-      form.querySelectorAll('.form-control, .btn').forEach(input => {
-        input.classList.remove('error');
-      });
-    }
-
-    // Show account required overlay
-    function showAccountRequiredOverlay(): void {
-      if (screens.accountRequired) {
-        screens.accountRequired.classList.add('active');
-        
-        // Add shake animation to message
-        const lockMessage = screens.accountRequired.querySelector('.lock-message');
-        if (lockMessage) {
-          lockMessage.classList.add('shake');
-          setTimeout(() => {
-            lockMessage.classList.remove('shake');
-          }, 600);
-        }
-      }
-    }
-
-    // Hide account required overlay
-    function hideAccountRequiredOverlay(): void {
-      if (screens.accountRequired) {
-        screens.accountRequired.classList.remove('active');
-      }
-    }
-
-    // Form submission handling - UPDATED TO USE REAL API SERVICE
-    async function handleFormSubmit(formType: string, event: Event): Promise<void> {
-      event.preventDefault();
-      
-      const form = forms[formType];
-      if (!form) return;
-      
-      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      if (!submitButton) return;
-      
-      const originalText = submitButton.textContent || 'Submit';
-      
-      clearFormErrors(formType);
-      
-      // Show loading state
-      form.classList.add('loading');
-      submitButton.textContent = 'Loading...';
-      
-      // Get form data
-      const formData: Record<string, any> = {};
-      if (formType === 'signin') {
-        const phoneInput = document.getElementById('signin-phone') as HTMLInputElement;
-        formData.phone = phoneInput?.value || '';
-        formData.action = 'signin';
-        appState.authFlow = 'signin';
-      } else if (formType === 'createAccount') {
-        const phoneInput = document.getElementById('create-phone') as HTMLInputElement;
-        const nameInput = document.getElementById('full-name') as HTMLInputElement;
-        const emailInput = document.getElementById('email') as HTMLInputElement;
-        const genderInput = document.getElementById('gender') as HTMLSelectElement;
-        const dobInput = document.getElementById('dob') as HTMLInputElement;
-        
-        formData.phone = phoneInput?.value || '';
-        formData.name = nameInput?.value || '';
-        formData.email = emailInput?.value || '';
-        formData.gender = genderInput?.value || '';
-        formData.dob = dobInput?.value || '';
-        formData.action = 'signup';
-        appState.authFlow = 'signup';
-        
-        // Update user data in state
-        appState.userData = {
-          name: formData.name,
-          email: formData.email,
-          gender: formData.gender,
-          dob: formData.dob
-        };
-      } else if (formType === 'otp') {
-        const otpInput = document.getElementById('otp-code') as HTMLInputElement;
-        formData.otp = otpInput?.value || '';
-        formData.phone = appState.currentPhone || '';
-      }
-      
-      // Validate form
-      const errors = validateForm(formType, formData);
-      
-      if (Object.keys(errors).length > 0) {
-        form.classList.remove('loading');
-        submitButton.textContent = originalText;
-        showFormErrors(formType, errors);
-        return;
-      }
-      
-      try {
-        if (formType === 'signin') {
-          // Check if user exists first
-          const userExists = await userService.checkUserExists(formData.phone);
-          
-          if (!userExists) {
-            // User doesn't have an account, show overlay
-            form.classList.remove('loading');
-            submitButton.textContent = originalText;
-            showAccountRequiredOverlay();
-            return;
-          }
-          
-          // Send OTP for existing user
-          await userService.sendOTP(formData.phone, 'signin');
-          
-          // Update OTP screen with phone number
-          const phoneDisplay = document.getElementById('otp-phone-display');
-          if (phoneDisplay) {
-            phoneDisplay.textContent = `+91 ${formData.phone}`;
-          }
-          
-          // Update OTP heading based on flow
-          const otpHeading = document.getElementById('otp-heading');
-          if (otpHeading) {
-            otpHeading.textContent = 'Sign in to your account';
-          }
-          
-          showScreen('otp');
-          showNotification('OTP sent successfully!', 'success');
-          
-        } else if (formType === 'createAccount') {
-          // Check if user already exists
-          const userExists = await userService.checkUserExists(formData.phone);
-          
-          if (userExists) {
-            // User already exists, redirect to signin
-            form.classList.remove('loading');
-            submitButton.textContent = originalText;
-            showNotification('Phone number already registered. Please sign in instead.', 'warning');
-            setTimeout(() => {
-              showScreen('signin');
-            }, 2000);
-            return;
-          }
-          
-          // Create new user account
-          await userService.createUser({
-            phone: formData.phone,
-            name: formData.name,
-            email: formData.email,
-            gender: formData.gender,
-            dob: formData.dob
-          });
-          
-          // Send OTP for new account
-          await userService.sendOTP(formData.phone, 'signup');
-          
-          // Update OTP screen with phone number
-          const phoneDisplay = document.getElementById('otp-phone-display');
-          if (phoneDisplay) {
-            phoneDisplay.textContent = `+91 ${formData.phone}`;
-          }
-          
-          // Update OTP heading
-          const otpHeading = document.getElementById('otp-heading');
-          if (otpHeading) {
-            otpHeading.textContent = 'Create your account';
-          }
-          
-          showScreen('otp');
-          showNotification('OTP sent successfully!', 'success');
-          
-        } else if (formType === 'otp') {
-          // Verify OTP
-          await userService.verifyOTP(formData.phone, formData.otp);
-          
-          // Show success screen
-          showScreen('success');
-          showNotification('Phone verified successfully!', 'success');
-        }
-      } catch (error) {
-        console.error('API Error:', error);
-        
-        let errorMessage = 'An error occurred. Please try again.';
-        
-        if (error && typeof error === 'object' && 'message' in error) {
-          errorMessage = error.message as string;
-        } else if (formType === 'signin' || formType === 'createAccount') {
-          errorMessage = 'Failed to send OTP. Please check your phone number.';
-        } else if (formType === 'otp') {
-          errorMessage = 'Invalid OTP. Please try again.';
-        }
-        
-        const fieldName = formType === 'otp' ? 'otp' : 'phone';
-        const errors: Record<string, string> = { [fieldName]: errorMessage };
-        showFormErrors(formType, errors);
-        
-        showNotification(errorMessage, 'error');
-      } finally {
-        // Reset loading state
-        form.classList.remove('loading');
-        submitButton.textContent = originalText;
-      }
-    }
-
-    // Setup event listeners
-    function setupEventListeners(): void {
-      console.log('Setting up event listeners...');
-      
-      // Form submissions
-      if (forms.signin) {
-        forms.signin.addEventListener('submit', (e: Event) => handleFormSubmit('signin', e));
-      }
-      
-      if (forms.createAccount) {
-        forms.createAccount.addEventListener('submit', (e: Event) => handleFormSubmit('createAccount', e));
-      }
-      
-      if (forms.otp) {
-        forms.otp.addEventListener('submit', (e: Event) => handleFormSubmit('otp', e));
-      }
-      
-      // Navigation
-      if (navLinks.goToCreate) {
-        navLinks.goToCreate.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault();
-          showScreen('createAccount');
-        });
-      }
-      
-      if (navLinks.goToSignin) {
-        navLinks.goToSignin.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault();
-          showScreen('signin');
-        });
-      }
-      
-      if (navLinks.goToCreateFromOverlay) {
-        navLinks.goToCreateFromOverlay.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault();
-          hideAccountRequiredOverlay();
-          showScreen('createAccount');
-        });
-      }
-      
-      // REAL RESEND OTP FUNCTIONALITY
-      if (navLinks.resendOtp) {
-        navLinks.resendOtp.addEventListener('click', async function(e: MouseEvent) {
-          e.preventDefault();
-          
-          const resendBtn = e.target as HTMLElement;
-          const originalText = resendBtn.textContent || 'Resend';
-          resendBtn.textContent = 'Sending...';
-          resendBtn.style.pointerEvents = 'none';
-          
-          try {
-            // Call resend OTP through user service
-            await userService.sendOTP(appState.currentPhone || '', appState.authFlow || 'signin');
-            
-            resendBtn.textContent = 'Sent!';
-            showNotification('OTP resent successfully!', 'success');
-            
-            setTimeout(() => {
-              resendBtn.textContent = originalText;
-              resendBtn.style.pointerEvents = 'auto';
-            }, 3000);
-          } catch (error) {
-            console.error('Failed to resend OTP:', error);
-            resendBtn.textContent = 'Failed!';
-            showNotification('Failed to resend OTP. Please try again.', 'error');
-            
-            setTimeout(() => {
-              resendBtn.textContent = originalText;
-              resendBtn.style.pointerEvents = 'auto';
-            }, 3000);
-          }
-        });
-      }
-      
-      if (navLinks.backToPhone) {
-        navLinks.backToPhone.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault();
-          showScreen(appState.authFlow === 'signin' ? 'signin' : 'createAccount');
-        });
-      }
-      
-      // Navigate to dashboard screen
-      if (navLinks.continueToDashboard) {
-        navLinks.continueToDashboard.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault();
+          // Login successful
+          localStorage.setItem('authToken', response.access_token);
           showScreen('dashboard');
-        });
-      }
-      
-      // Splash screen click to continue
-      if (screens.splash) {
-        screens.splash.addEventListener('click', () => {
-          showScreen('signin');
-        });
-      }
-      
-      // Account required overlay close on click outside
-      if (screens.accountRequired) {
-        screens.accountRequired.addEventListener('click', (e: MouseEvent) => {
-          if (e.target === screens.accountRequired) {
-            hideAccountRequiredOverlay();
-          }
-        });
-      }
-    }
-
-    // Input field enhancement
-    function enhanceInputFields(): void {
-      console.log('Enhancing input fields...');
-      
-      const inputs = document.querySelectorAll('.form-control');
-      
-      inputs.forEach(input => {
-        // Phone number formatting
-        if ((input as HTMLInputElement).type === 'tel') {
-          input.addEventListener('input', (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            let value = target.value.replace(/[^\d]/g, '');
-            
-            if (value.length > 10) {
-              value = value.slice(0, 10);
-            }
-            
-            target.value = value;
-          });
-          
-          input.addEventListener('keypress', function(e: Event) {
-            const keyboardEvent = e as KeyboardEvent;
-            if (!/\d/.test(keyboardEvent.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(keyboardEvent.key)) {
-              e.preventDefault();
-            }
-          });
+          await loadUserStats();
         }
-        
-        // OTP field enhancements
-        if (input.id === 'otp-code') {
-          input.addEventListener('input', (e: Event) => {
-            const target = e.target as HTMLInputElement;
-            let value = target.value.replace(/[^\d]/g, '');
-            
-            if (value.length > 6) {
-              value = value.slice(0, 6);
-            }
-            
-            target.value = value;
-          });
-          
-          input.addEventListener('keypress', function(e: Event) {
-            const keyboardEvent = e as KeyboardEvent;
-            if (!/\d/.test(keyboardEvent.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(keyboardEvent.key)) {
-              e.preventDefault();
-            }
-          });
-        }
-        
-        // Clear error state on input
-        input.addEventListener('input', () => {
-          input.classList.remove('error');
-          const errorMsg = input.parentNode?.querySelector('.error-message');
-          if (errorMsg) {
-            errorMsg.remove();
-          }
-        });
-      });
-      
-      // Add ripple effect to buttons
-      const rippleButtons = document.querySelectorAll('.ripple');
-      rippleButtons.forEach(button => {
-        button.addEventListener('click', function(e: Event) {
-          const mouseEvent = e as MouseEvent;
-          const target = mouseEvent.target as HTMLElement;
-          const x = mouseEvent.clientX - target.getBoundingClientRect().left;
-          const y = mouseEvent.clientY - target.getBoundingClientRect().top;
-          
-          const ripple = document.createElement('span');
-          ripple.classList.add('ripple-effect');
-          ripple.style.left = `${x}px`;
-          ripple.style.top = `${y}px`;
-          
-          button.appendChild(ripple);
-          
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
-        });
-      });
+      }
+    } catch (error: any) {
+      showNotification(error.message, 'error');
+    } finally {
+      isLoading = false;
     }
-
-    // Start the app
-    console.log('Starting app initialization...');
-    initApp();
   });
-  </script>
-  </Layout>
+
+  // Navigation
+  document.getElementById('go-to-create')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showScreen('create-account');
+  });
+
+  document.getElementById('go-to-signin')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showScreen('signin');
+  });
+
+  document.getElementById('go-to-dashboard')?.addEventListener('click', () => {
+    showScreen('dashboard');
+    loadUserStats();
+  });
+
+  document.getElementById('logout-btn')?.addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    currentUser = null;
+    showScreen('signin');
+  });
+
+  // Resend OTP functionality
+  let resendTimer = 0;
+  const resendBtn = document.getElementById('resend-otp');
+  
+  resendBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    if (resendTimer > 0) return;
+    
+    const originalText = (e.target as HTMLElement)?.textContent || '';
+    (e.target as HTMLElement).textContent = 'Sending...';
+    (e.target as HTMLElement).style.pointerEvents = 'none';
+    
+    try {
+      await sendOTP(currentUser.phone as string);
+      showNotification('OTP sent successfully', 'success');
+      
+      resendTimer = 30;
+      const countdown = setInterval(() => {
+        if (resendBtn) {
+          (resendBtn as HTMLElement).textContent = `Resend (${resendTimer}s)`;
+        }
+        
+        resendTimer--;
+        
+        if (resendTimer < 0) {
+          clearInterval(countdown);
+          if (resendBtn) {
+            (resendBtn as HTMLElement).textContent = originalText;
+            (resendBtn as HTMLElement).style.pointerEvents = 'auto';
+          }
+        }
+      }, 1000);
+      
+    } catch (error: any) {
+      if (resendBtn) {
+        (resendBtn as HTMLElement).textContent = originalText;
+        (resendBtn as HTMLElement).style.pointerEvents = 'auto';
+      }
+      showNotification('Failed to resend OTP', 'error');
+    }
+  });
+
+  // OTP Input Navigation
+  const otpInputs = document.querySelectorAll('.otp-input');
+  otpInputs.forEach((input, index) => {
+    const inputElement = input as HTMLInputElement;
+    
+    inputElement.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target && target.value.length === 1 && index < otpInputs.length - 1) {
+        const nextInput = otpInputs[index + 1] as HTMLInputElement;
+        nextInput.focus();
+      }
+      
+      // Auto-submit when all fields are filled
+      const allFilled = Array.from(otpInputs).every(inp => (inp as HTMLInputElement).value.length === 1);
+      if (allFilled) {
+        const otpForm = document.getElementById('otp-form') as HTMLFormElement;
+        if (otpForm) {
+          const otpValue = Array.from(otpInputs).map(inp => (inp as HTMLInputElement).value).join('');
+          // Create hidden input for form data
+          let hiddenInput = document.getElementById('otp-hidden') as HTMLInputElement;
+          if (!hiddenInput) {
+            hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.id = 'otp-hidden';
+            hiddenInput.name = 'otp';
+            otpForm.appendChild(hiddenInput);
+          }
+          hiddenInput.value = otpValue;
+          otpForm.dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+
+    inputElement.addEventListener('keydown', (e) => {
+      const keyboardEvent = e as KeyboardEvent;
+      if (keyboardEvent.key === 'Backspace' && !(e.target as HTMLInputElement)?.value && index > 0) {
+        const prevInput = otpInputs[index - 1] as HTMLInputElement;
+        prevInput.focus();
+      }
+    });
+  });
+
+  // Topic Selection
+  document.querySelectorAll('.topic-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const element = e.target as HTMLElement;
+      
+      // Remove active class from all topic buttons
+      document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+      
+      // Add active class to clicked button
+      element.classList.add('active');
+      
+      // Set current topic
+      const topicElement = element as HTMLElement;
+      if (topicElement.dataset.topic) {
+        currentTopic = topicElement.dataset.topic;
+      }
+    });
+  });
+
+  // Media Tab Switching
+  document.querySelectorAll('.media-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      const element = e.target as HTMLElement;
+      const tabType = element.dataset.type;
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.media-tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+      
+      // Hide all interfaces
+      document.querySelectorAll('.media-interface').forEach(iface => {
+        iface.classList.remove('active');
+      });
+      
+      // Show selected interface
+      if (tabType === 'upload') {
+        const uploadInterface = document.getElementById('file-upload-interface');
+        if (uploadInterface) {
+          uploadInterface.classList.add('active');
+        }
+      } else if (tabType === 'text') {
+        const textInterface = document.getElementById('text-input-interface');
+        if (textInterface) {
+          textInterface.classList.add('active');
+        }
+      }
+    });
+  });
+
+  // File Upload Functionality
+  const uploadZone = document.getElementById('upload-zone');
+  const fileInput = document.getElementById('file-input') as HTMLInputElement;
+  const filePreview = document.getElementById('file-preview');
+  const uploadBtn = document.getElementById('upload-selected-files');
+
+  // Click to select files
+  uploadZone?.addEventListener('click', () => {
+    fileInput?.click();
+  });
+
+  // Drag and drop
+  uploadZone?.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    if (uploadZone) {
+      uploadZone.classList.add('drag-over');
+    }
+  });
+
+  uploadZone?.addEventListener('dragleave', () => {
+    if (uploadZone) {
+      uploadZone.classList.remove('drag-over');
+    }
+  });
+
+  uploadZone?.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (uploadZone) {
+      uploadZone.classList.remove('drag-over');
+    }
+    
+    const files = (e as DragEvent).dataTransfer?.files;
+    if (files) {
+      handleFileSelection(Array.from(files));
+    }
+  });
+
+  // File input change
+  fileInput?.addEventListener('change', (e) => {
+    const target = e.target as HTMLInputElement;
+    if (target && target.files) {
+      handleFileSelection(Array.from(target.files));
+    }
+  });
+
+  function handleFileSelection(files: File[]): void {
+    selectedFiles = files;
+    displayFilePreview(files);
+    
+    if (uploadBtn) {
+      uploadBtn.classList.remove('hidden');
+    }
+  }
+
+  function displayFilePreview(files: File[]): void {
+    if (!filePreview) return;
+    
+    filePreview.innerHTML = '';
+    
+    files.forEach((file, index) => {
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      fileItem.innerHTML = `
+        <div class="file-info">
+          <span class="file-name">${file.name}</span>
+          <span class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+        </div>
+        <button class="remove-file" onclick="removeFile(${index})">×</button>
+      `;
+      filePreview.appendChild(fileItem);
+    });
+  }
+
+  // Upload selected files
+  uploadBtn?.addEventListener('click', async () => {
+    if (selectedFiles.length === 0) {
+      showNotification('Please select files to upload', 'error');
+      return;
+    }
+
+    if (!currentTopic) {
+      showNotification('Please select a topic first', 'error');
+      return;
+    }
+
+    showUploadModal('Uploading Files...', 'Please wait while we upload your files');
+
+    try {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const progress = ((i + 1) / selectedFiles.length) * 100;
+        updateUploadProgress(progress);
+        
+        await uploadFile(selectedFiles[i], currentTopic);
+      }
+      
+      hideUploadModal();
+      showNotification('All files uploaded successfully!', 'success');
+      
+      // Reset
+      selectedFiles = [];
+      if (filePreview) {
+        filePreview.innerHTML = '';
+      }
+      if (uploadBtn) {
+        uploadBtn.classList.add('hidden');
+      }
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      
+      await loadUserStats();
+      
+    } catch (error: any) {
+      hideUploadModal();
+      showNotification('Upload failed: ' + error.message, 'error');
+    }
+  });
+
+  // Text Submission
+  document.getElementById('submit-text')?.addEventListener('click', async () => {
+    const titleInput = document.getElementById('text-title') as HTMLInputElement;
+    const contentInput = document.getElementById('text-content') as HTMLTextAreaElement;
+    const descriptionInput = document.getElementById('text-description') as HTMLTextAreaElement;
+    
+    const title = titleInput?.value.trim();
+    const content = contentInput?.value.trim();
+    const description = descriptionInput?.value.trim();
+
+    if (!content) {
+      showNotification('Please enter some text content', 'error');
+      return;
+    }
+
+    if (!currentTopic) {
+      showNotification('Please select a topic first', 'error');
+      return;
+    }
+
+    try {
+      showUploadModal('Submitting Text...', 'Please wait while we process your text');
+      
+      await submitText(content, currentTopic, title, description);
+      
+      hideUploadModal();
+      showNotification('Text submitted successfully!', 'success');
+      
+      // Clear form
+      if (titleInput) titleInput.value = '';
+      if (contentInput) contentInput.value = '';
+      if (descriptionInput) descriptionInput.value = '';
+      
+      await loadUserStats();
+      
+    } catch (error: any) {
+      hideUploadModal();
+      showNotification('Text submission failed: ' + error.message, 'error');
+    }
+  });
+
+  // Notification close
+  document.getElementById('notification-close')?.addEventListener('click', () => {
+    const notification = document.getElementById('notification');
+    if (notification) {
+      notification.classList.add('hidden');
+    }
+  });
+
+  // Check for existing auth token
+  const authToken = localStorage.getItem('authToken');
+  if (authToken) {
+    // Auto-login if token exists
+    setTimeout(() => {
+      showScreen('dashboard');
+      loadUserStats();
+    }, 2000);
+  }
+});
+
+// Global function for removing files (called from HTML)
+function removeFile(index: number): void {
+  selectedFiles.splice(index, 1);
+  
+  const filePreview = document.getElementById('file-preview');
+  const uploadBtn = document.getElementById('upload-selected-files');
+  
+  if (filePreview) {
+    const fileItems = filePreview.children;
+    if (fileItems[index]) {
+      fileItems[index].remove();
+    }
+  }
+  
+  if (selectedFiles.length === 0 && uploadBtn) {
+    uploadBtn.classList.add('hidden');
+  }
+}
+
+// Ripple effect for buttons
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement;
+  if (target && target.classList.contains('ripple')) {
+    const rect = target.getBoundingClientRect();
+    const x = (e as MouseEvent).clientX - rect.left;
+    const y = (e as MouseEvent).clientY - rect.top;
+    
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    
+    target.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  }
+});
+</script>
+</Layout>
+Complete Corrected Dashboard.astro File
+text
+---
+// Dashboard.astro - Complete file upload dashboard
+---
+
+<div id="dashboard-content" class="dashboard-content">
+  <div class="dashboard-header">
+    <div class="user-profile">
+      <div class="profile-icon small">
+        <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="38" fill="#2196F3" stroke="#fff" stroke-width="4"/>
+          <circle cx="40" cy="30" r="12" fill="#fff"/>
+          <path d="M20 60c0-11 9-20 20-20s20 9 20 20" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="user-info">
+        <h3 id="user-name">Welcome User</h3>
+        <p id="user-phone"></p>
+      </div>
+    </div>
+    <button id="logout-btn" class="btn btn--secondary">Logout</button>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-number" id="audio-count">0</div>
+      <div class="stat-label">Audio Files</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="video-count">0</div>
+      <div class="stat-label">Video Files</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="image-count">0</div>
+      <div class="stat-label">Images</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="text-count">0</div>
+      <div class="stat-label">Text Records</div>
+    </div>
+  </div>
+
+  <div class="topics-container">
+    <h3>Select a Topic</h3>
+    <div class="topics-grid">
+      <button class="topic-btn" data-topic="health">Health</button>
+      <button class="topic-btn" data-topic="education">Education</button>
+      <button class="topic-btn" data-topic="technology">Technology</button>
+      <button class="topic-btn" data-topic="agriculture">Agriculture</button>
+      <button class="topic-btn" data-topic="business">Business</button>
+      <button class="topic-btn" data-topic="general">General</button>
+    </div>
+  </div>
+
+  <div class="media-container">
+    <div class="media-tabs">
+      <button class="media-tab active" data-type="upload">File Upload</button>
+      <button class="media-tab" data-type="text">Text Input</button>
+    </div>
+
+    <!-- File Upload Interface -->
+    <div id="file-upload-interface" class="media-interface active">
+      <div class="upload-container">
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <p class="upload-text">Click to select files or drag and drop</p>
+          <p class="upload-subtitle">Supports: Audio (MP3, WAV), Video (MP4), Images (JPG, PNG), Text (TXT)</p>
+          <input type="file" id="file-input" multiple accept=".mp3,.wav,.mp4,.jpg,.jpeg,.png,.txt" class="hidden">
+        </div>
+        
+        <div class="file-preview" id="file-preview"></div>
+        
+        <button id="upload-selected-files" class="btn btn--primary upload-btn hidden">
+          Upload Selected Files
+        </button>
+      </div>
+    </div>
+
+    <!-- Text Input Interface -->
+    <div id="text-input-interface" class="media-interface">
+      <div class="text-container">
+        <div class="form-group">
+          <input type="text" id="text-title" class="form-control" placeholder="Enter title for your text">
+        </div>
+        <div class="form-group">
+          <textarea id="text-content" class="form-control text-area" placeholder="Type your Telugu text here..." rows="6"></textarea>
+        </div>
+        <div class="form-group">
+          <textarea id="text-description" class="form-control" placeholder="Description (optional)" rows="3"></textarea>
+        </div>
+        <button id="submit-text" class="btn btn--primary btn--full-width">Submit Text</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Dashboard-specific TypeScript code with proper typing
+const dashboardConfig = {
+  maxFileSize: 50 * 1024 * 1024, // 50MB
+  allowedTypes: [
+    'audio/mp3', 'audio/wav', 'audio/mpeg',
+    'video/mp4', 'video/avi', 'video/mov',
+    'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+    'text/plain'
+  ]
+};
+
+// Dashboard initialization
+function initializeDashboard(): void {
+  loadDashboardData();
+  setupEventListeners();
+}
+
+async function loadDashboardData(): Promise<void> {
+  try {
+    const userProfile = await getCurrentUserProfile();
+    updateUserDisplay(userProfile);
+    
+    const stats = await getUserStatistics();
+    updateStatsDisplay(stats);
+  } catch (error) {
+    console.error('Failed to load dashboard data:', error);
+  }
+}
+
+async function getCurrentUserProfile(): Promise<any> {
+  const response = await fetch(`${BASE_URL}/users/me`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to load user profile');
+  }
+  
+  return await response.json();
+}
+
+async function getUserStatistics(): Promise<any> {
+  const response = await fetch(`${BASE_URL}/users/me/stats`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to load user statistics');
+  }
+  
+  return await response.json();
+}
+
+function updateUserDisplay(user: any): void {
+  const userNameEl = document.getElementById('user-name');
+  const userPhoneEl = document.getElementById('user-phone');
+  
+  if (userNameEl && user.name) {
+    userNameEl.textContent = `Welcome, ${user.name}`;
+  }
+  
+  if (userPhoneEl && user.phone_number) {
+    userPhoneEl.textContent = user.phone_number;
+  }
+}
+
+function updateStatsDisplay(stats: any): void {
+  const audioCountEl = document.getElementById('audio-count');
+  const videoCountEl = document.getElementById('video-count');
+  const imageCountEl = document.getElementById('image-count');
+  const textCountEl = document.getElementById('text-count');
+  
+  if (audioCountEl) audioCountEl.textContent = stats.audio_count?.toString() || '0';
+  if (videoCountEl) videoCountEl.textContent = stats.video_count?.toString() || '0';
+  if (imageCountEl) imageCountEl.textContent = stats.image_count?.toString() || '0';
+  if (textCountEl) textCountEl.textContent = stats.text_count?.toString() || '0';
+}
+
+function setupEventListeners(): void {
+  // File upload event listeners are already set up in the main index.astro file
+  // This function can be extended for dashboard-specific functionality
+  
+  // Example: Add keyboard shortcuts for dashboard
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.ctrlKey) {
+      switch (e.key) {
+        case '1':
+          e.preventDefault();
+          switchToTab('upload');
+          break;
+        case '2':
+          e.preventDefault();
+          switchToTab('text');
+          break;
+      }
+    }
+  });
+}
+
+function switchToTab(tabType: string): void {
+  const uploadTab = document.querySelector('[data-type="upload"]');
+  const textTab = document.querySelector('[data-type="text"]');
+  const uploadInterface = document.getElementById('file-upload-interface');
+  const textInterface = document.getElementById('text-input-interface');
+  
+  // Remove active classes
+  document.querySelectorAll('.media-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  document.querySelectorAll('.media-interface').forEach(iface => {
+    iface.classList.remove('active');
+  });
+  
+  // Add active classes based on tab type
+  if (tabType === 'upload' && uploadTab && uploadInterface) {
+    uploadTab.classList.add('active');
+    uploadInterface.classList.add('active');
+  } else if (tabType === 'text' && textTab && textInterface) {
+    textTab.classList.add('active');
+    textInterface.classList.add('active');
+  }
+}
+
+// File validation function
+function validateFile(file: File): { valid: boolean; error?: string } {
+  if (file.size > dashboardConfig.maxFileSize) {
+    return {
+      valid: false,
+      error: `File size must be less than ${dashboardConfig.maxFileSize / 1024 / 1024}MB`
+    };
+  }
+  
+  if (!dashboardConfig.allowedTypes.includes(file.type)) {
+    return {
+      valid: false,
+      error: 'File type not supported'
+    };
+  }
+  
+  return { valid: true };
+}
+
+// Enhanced file handling with validation
+function handleValidatedFileSelection(files: File[]): void {
+  const validFiles: File[] = [];
+  const errors: string[] = [];
+  
+  files.forEach(file => {
+    const validation = validateFile(file);
+    if (validation.valid) {
+      validFiles.push(file);
+    } else {
+      errors.push(`${file.name}: ${validation.error}`);
+    }
+  });
+  
+  if (errors.length > 0) {
+    showNotification(`Some files were rejected: ${errors.join(', ')}`, 'error');
+  }
+  
+  if (validFiles.length > 0) {
+    selectedFiles = validFiles;
+    displayFilePreview(validFiles);
+    
+    const uploadBtn = document.getElementById('upload-selected-files');
+    if (uploadBtn) {
+      uploadBtn.classList.remove('hidden');
+    }
+  }
+}
+
+// Initialize dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if we're on the dashboard
+  const dashboardElement = document.getElementById('dashboard');
+  if (dashboardElement && dashboardElement.classList.contains('active')) {
+    initializeDashboard();
+  }
+});
+</script>
